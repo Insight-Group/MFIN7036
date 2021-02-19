@@ -1,5 +1,5 @@
-# Blog for Course MFIN7036
+# MFIN7036-Blog
 
-- [source code](https://github.com/Insight-Group/MFIN7036-Blog/tree/main/code)
-- [dataset used](https://github.com/Insight-Group/MFIN7036-Blog/tree/main/dataset)
-- [blog online](https://insight-group.github.io/MFIN7036-Blog)
+- [How to Write Blog](./how-to-write-blog.md)
+- [How to Use Github](./git-workflow.md)
+
