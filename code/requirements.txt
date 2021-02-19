@@ -1,4 +1,4 @@
 sklearn
 nltk
 pandas
-matplotlib
+matplotli
