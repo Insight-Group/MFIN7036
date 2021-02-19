@@ -6,8 +6,8 @@
 
 ## 1 拉取一个全新仓库改动并推送变更全过程
 
-1. 克隆仓库：git clone git@github.com:Insight-Group/MFIN7036-Blog.git
-2. 跳转目录：cd MFIN7036-Blog
+1. 克隆仓库：git clone git@github.com:Insight-Group/MFIN7036.git
+2. 跳转目录：cd MFIN7036
 3. 在各种软件中打开此文件夹，编辑、新增文件夹内的文件
 4. 查看git仓库状态：git status
 5. 提交所有更改到暂存区：git add .
@@ -16,7 +16,7 @@
 
 ## 2 在本地已有仓库改动并推送变更全过程
 
-1. 跳转目录：cd your/path/to/git/repo/MFIN7036-Blog
+1. 跳转目录：cd your/path/to/git/repo/MFIN7036
 2. 在各种软件中打开此文件夹，编辑、新增文件夹内的文件
 3. 查看git仓库状态：git status
 4. 提交所有更改到暂存区：git add .
