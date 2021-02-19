@@ -42,22 +42,17 @@ def polarity_calculation(df_data):
     return df_polarity
     
 
-df_stock = pd.read_csv("./600196.csv")
-df_stock = return_calculation(df_stock)
+def graphical_regression(df_test):
+    
+    plt.rcParams["figure.figsize"] = (12,8)
+    ax = (df_test
+        .assign(date=df_test['Date'], momentum=df_test['cum_ret']+1, polarity=df_test['Polarity'])
+        .plot(x='Date', y=['cum_ret', 'Polarity'])
+    ).set_ylabel('test result')
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
+    plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
+    plt.gcf().autofmt_xdate()
+    # plt.savefig("./regression-result/graph_cum_ret_and_polarity.png")
 
-df_data = pd.read_csv("./sentiment_analysis.csv")
-df_polarity = polarity_calculation(df_data)
-
-df_test = pd.merge(df_stock, df_polarity, how='left', on=['Date'] )
-
-
-plt.rcParams["figure.figsize"] = (12,8)
-ax = (df_test
-    .assign(date=df_test['Date'], momentum=df_test['cum_ret']+1, polarity=df_test['Polarity'])
-    .plot(x='Date', y=['cum_ret', 'Polarity'])
-).set_ylabel('test result')
-plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
-plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
-plt.gcf().autofmt_xdate()
-
-print(smf.ols('cum_ret ~ Polarity', data=df_test).fit().summary())
+def OLS_regression(df_test):
+    print(smf.ols('cum_ret ~ Polarity', data=df_test).fit().summary())

@@ -11,31 +11,31 @@ from nltk.sentiment import SentimentIntensityAnalyzer   # NLTK Vader
 from textblob import TextBlob                           # TextBlob
 # C:\Users\SAMSUNG-1\AppData\Roaming\nltk_data\
 
-twitter_data_frame = pd.read_csv("./data_reshaping_and_preprocessing.csv", index_col=0)    
-
 
 """analyse sentiment by NLTK Vader"""
+def NLTK_Vader_sentiment_analysis(twitter_data_frame):
 
-sia = SentimentIntensityAnalyzer()
+    sia = SentimentIntensityAnalyzer()
+        
+    NLTK_Vader_polarity = []
     
-NLTK_Vader_polarity = []
-
-for line in twitter_data_frame['final_token']:
-    sentiment = sia.polarity_scores(line)
-    NLTK_Vader_polarity.append(sentiment)
-
-twitter_data_frame['NLTK_Vader_polarity'] = pd.Series(NLTK_Vader_polarity)
+    for line in twitter_data_frame['final_token']:
+        sentiment = sia.polarity_scores(str(line))
+        NLTK_Vader_polarity.append(sentiment)
+    
+    twitter_data_frame['NLTK_Vader_polarity'] = pd.Series(NLTK_Vader_polarity)
+    
+    return twitter_data_frame
 
 
 """analyse sentiment by TextBlob"""
-
-TextBlob_polarity = []
-
-for line in twitter_data_frame['final_token']:
-    [polarity, subjectivity] = list(TextBlob(line).sentiment)
-    TextBlob_polarity.append(polarity)
+def TextBlob_sentiment_analysis(twitter_data_frame):
+    TextBlob_polarity = []
     
-twitter_data_frame['TextBlob_polarity'] = pd.Series(TextBlob_polarity)
-
-
-twitter_data_frame.to_csv("./sentiment_analysis.csv", index = False)
+    for line in twitter_data_frame['final_token']:
+        [polarity, subjectivity] = list(TextBlob(str(line)).sentiment)
+        TextBlob_polarity.append(polarity)
+        
+    twitter_data_frame['TextBlob_polarity'] = pd.Series(TextBlob_polarity)
+    
+    return twitter_data_frame
