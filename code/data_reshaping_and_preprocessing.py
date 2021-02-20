@@ -8,7 +8,7 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # The follwing three definations can be replaced by build-in TfidfVectorizer
-# Calculate the Term Frequency in one document(one tweet)
+# Calculate the Term Frequency in one document(one tweet) bagofWords is a list
 def computeTF(wordDict, bagOfWords):
     tfDict = {}
     bagOfWordsCount = len(bagOfWords)
@@ -58,7 +58,7 @@ def get_wordnet_pos(word):
                 "N": wordnet.NOUN,
                 "V": wordnet.VERB,
                 "R": wordnet.ADV}
-
+    # if the pos_tag of the word cannot be matched in tag_dict, then define it as the defalut 'wordnet.NOUN'
     return tag_dict.get(tag, wordnet.NOUN)    
 
 """
@@ -95,7 +95,7 @@ Must be called after tokenize_and_add_column
 Calculation based on final_token column data and generate the tfdif column
 """
 def calculate_tfidf_and_add_column(twitter_data_frame):
-    # Get words set of all tweets
+    # Get words SET of all tweets
     words = []
     for line in twitter_data_frame['final_token']:
         words.extend(line)
@@ -122,7 +122,7 @@ def calculate_tfidf_and_add_column(twitter_data_frame):
     # Calculat tfdif of every tweet
     for tf in all_tf:
         tfidfs.append(computeTFIDF(tf, idfs))
-    # Add tfdif column for each line
+    # Add tfdif column for each line   tfdif is the list of dict
     twitter_data_frame['tfidf'] = pd.Series(tfidfs)
         
     print("*****************************")
