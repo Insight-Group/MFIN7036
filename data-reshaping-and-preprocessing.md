@@ -19,7 +19,7 @@ def tokenize_and_add_column(twitter_data_frame):
         english_words = [word for word in tokens if word.isalpha()]
         # Filter stop words like for, do, an, etc
         tags = nltk.pos_tag(english_words)
-        final_tokens = [word for word, pos in tags if not pos in set(stopwords.words('english'))]
+        final_tokens = [word for word, pos in tags if not word.lower() in set(stopwords.words('english'))]
         final_tokens = [wl.lemmatize(word, pos="n") for word in final_tokens]
         final_tokens = [wl.lemmatize(word, pos="v") for word in final_tokens]
     
