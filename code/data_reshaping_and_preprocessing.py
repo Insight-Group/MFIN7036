@@ -8,6 +8,7 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # The follwing three definations can be replaced by build-in TfidfVectorizer
+# Calculate the Term Frequency in one document(one tweet)
 def computeTF(wordDict, bagOfWords):
     tfDict = {}
     bagOfWordsCount = len(bagOfWords)
@@ -15,6 +16,7 @@ def computeTF(wordDict, bagOfWords):
         tfDict[word] = count / float(bagOfWordsCount)
     return tfDict
 
+# Calculate the the REVERSE of Document(with unique words) Frequency in the document aggregrates
 def computeIDF(documents, uniquewords):
     import math
     N = len(documents)
@@ -30,6 +32,7 @@ def computeIDF(documents, uniquewords):
         idfDict[word] = math.log(N / float(val))
     return idfDict
 
+# calculate the product of the above results
 def computeTFIDF(tfBagOfWords, idfs):
     tfidf = {}
     for word, val in tfBagOfWords.items():
