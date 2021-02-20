@@ -9,12 +9,14 @@ def download(proxy):
     nltk.download('punkt')
     nltk.download('averaged_perceptron_tagger')
     nltk.download('wordnet')
+    nltk.download('vader_lexicon')
   else:
     try:
       nltk.download('stopwords')
       nltk.download('punkt')
       nltk.download('averaged_perceptron_tagger')
       nltk.download('wordnet')
+      nltk.download('vader_lexicon')
     except:
         print("Download error, enable proxy and try again")
 
