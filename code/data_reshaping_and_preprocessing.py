@@ -119,6 +119,7 @@ def calculate_tfidf_and_add_column(twitter_data_frame):
     idfs = computeIDF(all_number_of_words, uniquewords)
     
     tfidfs = []
+    
     # calculate tfdif of every tweet
     for tf in all_tf:
         tfidfs.append(computeTFIDF(tf, idfs))
