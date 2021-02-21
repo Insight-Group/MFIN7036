@@ -54,11 +54,33 @@ plt.axis("off")
 
 plt.show
 ```
+Note: To use wordcloud, we need to install worldcloud package from 
+      # git clone https://github.com/amueller/word_cloud.git
+      # cd word_cloud
+      # pip install
+      # OR easy downland with conda install -c conda-forge wordcloud
 
+### 1.3 Frequency Table 
 
+The frequency table shows the number of times a word occurring in Fosun tweets. We stored the frequency value key:value pairs and used a one-dimensional array (pd.series) to store the data. 
 
+```python
+final_frequency ={k:v for (k,v) in frequency.items() if not k in stopwords}
 
+frequency_list = pd.Series(final_frequency).sort_values(ascending = False).head(30).to_frame().reset_index().rename(columns={'index':'word',0:'frequency'})
 
+frequency_list.plot(kind='barh',x='word',y='frequency',figsize=(10,10))
 
+plt.title('frequency of differnt words in Fosun tweets')
 
+plt.show()
+```
+## 2. Results 
+The world could picture and frequency table generating from the frequency of words in Fosun tweets are shown as below:
+
+![Screenshot 2021-02-21 at 09 24 59](https://user-images.githubusercontent.com/78474798/108612799-e2f1aa80-7426-11eb-889e-844d6d445c7d.png)
+
+## 3. Problems 
+
+After finishing data visulization, we found two unrecoginized words appearing in our frequency table and world cloud of Fosun. Therefore, we re-examineed previous process step by step and ran the frequency of words in Bilibili tweets to do the rain check. The tables presenting the frequency of words in Bilibili tweets contains unregonized words as well. By checking the 'Variable Explorer' in Python, we discovered that these two unrecognized words are actually 'Chinese'. It shows the potential problems in the previous step, Data Reshaping and Preprocessing. It is always good to detect the problems in the early stage as it gives us the opportunity to correct the mistakes and stop loss in time. The process of analyzing natural language data would never be a smooth sailing and the most important thing is to keep going and moving forward. 
 
