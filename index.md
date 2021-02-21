@@ -11,7 +11,7 @@
 - [Text Processing and Sentiment Analysis](text-processing-and-sentiment-analysis.md)
 
 ### Ⅲ Regression
-
+- [Data Visulization](Data-Visulization.md)
 - [Regression with Sentiment Polarity Scores](regression-with-sentiment-polarity-scores.md)
 
 
