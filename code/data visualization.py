@@ -14,7 +14,7 @@ from nltk.corpus import stopwords
 
 frequency = dict()
 
-#def as define function; need to run togather 
+#def as define function; need to run together 
 df=pd.DataFrame(data_frame)
 final_token=df.final_token
 
