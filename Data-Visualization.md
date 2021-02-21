@@ -1,5 +1,5 @@
 # Data Visualization 
-Followed by Data Reshaping and Preprocessing, we obtained a series of tokenized words. Due to the large amount of data set, it is hard for us to uderstand the underlying trends and patterns. Therefore, the data visulization becomes neccesary. As a part of data visulization, the frequency table and wordclouds are genenarated to tell the story behind the data.   
+Followed by Data Reshaping and Preprocessing, we obtained a series of tokenized words. Due to the large amount of data set, it is hard for us to uderstand the underlying trends and patterns. Therefore, the data visualization becomes neccesary. As a part of data visulization, the frequency table and wordclouds are genenarated to tell the story behind the data.   
 
 ## 1. Process
 ### 1.1 Generating Frequency Set 
@@ -78,5 +78,5 @@ The world could picture and frequency table generating from the frequency of wor
 
 ## 3. Problems 
 
-After finishing data visulization, we found two unrecoginized words appearing in our frequency table and world cloud of Fosun. Therefore, we re-examineed previous process step by step and ran the frequency of words in Bilibili tweets to do the rain check. The tables presenting the frequency of words in Bilibili tweets contains unregonized words as well. By checking the 'Variable Explorer' in Python, we discovered that these two unrecognized words are actually 'Chinese'. It shows the potential problems in the previous step, Data Reshaping and Preprocessing. It is always good to detect the problems in the early stage as it gives us the opportunity to correct the mistakes and stop loss in time. The process of analyzing natural language data would never be a smooth sailing and the most important thing is to keep going and moving forward. 
+After finishing data visualization, we found two unrecoginized words appearing in our frequency table and world cloud of Fosun. Therefore, we re-examineed previous process step by step and ran the frequency of words in Bilibili tweets to do the rain check. The tables presenting the frequency of words in Bilibili tweets contains unregonized words as well. By checking the 'Variable Explorer' in Python, we discovered that these two unrecognized words are actually 'Chinese'. It shows the potential problems in the previous step, Data Reshaping and Preprocessing. It is always good to detect the problems in the early stage as it gives us the opportunity to correct the mistakes and stop loss in time. The process of analyzing natural language data would never be a smooth sailing and the most important thing is to keep going and moving forward. 
 
