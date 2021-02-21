@@ -41,17 +41,13 @@ text = " ".join([(k+" ")*v for k,v in frequency.items()])
 stopwords = set(STOPWORDS)
 
 path = "/Users/luqilin/MFIN7036-Blog/code/red-white-pill-hi.png"
-
 pill = np.array(Image.open(path))
 
 wc = WordCloud(stopwords = stopwords,mask = pill, background_color="white", width = 30000, height = 20000,collocations = False,max_words=50)
-
 wc.generate(text)
 
 plt.imshow(wc, interpolation='bilinear')
-
 plt.axis("off")
-
 plt.show
 ```
 Note: To use wordcloud, we need to install worldcloud package from 
