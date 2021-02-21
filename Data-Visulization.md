@@ -55,10 +55,10 @@ plt.axis("off")
 plt.show
 ```
 Note: To use wordcloud, we need to install worldcloud package from 
-      # git clone https://github.com/amueller/word_cloud.git
-      # cd word_cloud
-      # pip install
-      # OR easy downland with conda install -c conda-forge wordcloud
+      - git clone https://github.com/amueller/word_cloud.git
+      - cd word_cloud
+      - pip install
+      - OR easy downland with conda install -c conda-forge wordcloud
 
 ### 1.3 Frequency Table 
 
