@@ -185,11 +185,11 @@ Both of these two approaches analyze the text according to its lexicon library. 
 
 <div align=center><img src ="./sentiment-testing/Distribution of Polarity Scores Class.png"/></div>
 
-Among 1123 tweets, the result given by *NLTK Vader* is that 390(34.73%), 142(12.64%) and 591(52.63%) are positive, negative and neutral respectively, while *TextBlob* says that 291(25.91%), 100(8.90%) and 732(65.18%) are positive, negative and neutral respectively. 
+Among 1123 tweets of Fosun Pharma in 2020, the result given by *NLTK Vader* is that 390(34.73%), 142(12.64%) and 591(52.63%) are positive, negative and neutral respectively, while *TextBlob* says that 291(25.91%), 100(8.90%) and 732(65.18%) are positive, negative and neutral respectively. 
 
-Both of these two approaches conclude that positive sentiment in tweets is greater than negative sentiment. Both of these two approaches conclude that positive sentiment in tweets is greater than negative sentiment. However, the numbers in each polarity scores class are not the same. More neutral are produced by *TextBlob*.
+Both of these two approaches conclude that positive sentiment in tweets is greater than negative sentiment. However, the numbers in each polarity scores class are not the same. More neutral are produced by *TextBlob*.
 
-<div align=center><img width = '500' height ='350' src ="./sentiment-testing/The Difference of Polarity Score Class.png"/></div>
+<div align=center><img width = '500' height ='300' src ="./sentiment-testing/The Difference of Polarity Score Class.png"/></div>
 
 200 of the 1123 tweets are recognized to be positive by both of these two approaches, and 29 and 492 are recognized to be negative and neutral. These two approaches have different results on the polarity of the remaining 402 tweets. *NLTK Vader* gives positive and negative sentiment score for the 151 and 89 tweets, but *TextBlob* says they are neutral. So, *NLTK Vader* seems to be more sensitive to our sample tweets than *TextBlob*.
 
