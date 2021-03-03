@@ -7,7 +7,8 @@ Created on Mon Feb 15 21:52:41 2021
 
 import os
 import pandas as pd
-from nltk.sentiment import SentimentIntensityAnalyzer   # NLTK Vader
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer   # NLTK Vader
 from textblob import TextBlob                           # TextBlob
 # C:\Users\SAMSUNG-1\AppData\Roaming\nltk_data\
 
