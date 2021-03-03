@@ -168,6 +168,7 @@ where x is sum of valence scores of words in the sentences, and α is normalizat
 
 1. *TextBlob* also has a lexicon library, "en-sentiment.xml", an XML document that includes the different senses for the same word and identified by different ids. There are 2919 records collected by this lexicon library. *TextBlob* also handles negation (e.g. not) and modifier words (e.g very).
 
+An example of the word entries in lexicon library:
 <div align=center><img src ="./sentiment-testing/TB_lexicon library.png"/></div>
 
 2. *TextBlob* can identify different entities based on its entities library, "en-entities.txt" and tag phrases by Parts of Speech (POS).
@@ -175,13 +176,17 @@ where x is sum of valence scores of words in the sentences, and α is normalizat
 3. When calculating sentiment for a single word, *TextBlob* simply takes average of different entries for the same word. *TextBlob* goes along finding words and phrases it can assign polarity and subjectivity to, and it averages them all together for longer text. (e.g. multiply polarity by negation's measure , the inverse intensity of the modifier enters for both polarity and subjectivity.)
 
 
-### 1.3 Comparison and conclusion
+### 1.3 Comparison and Conclusion
 
-Both of these two approaches analyze the text according to its lexicon library. *NLTK Vader* focus on analyze in context by considering the word terms and conjunctions, whereas *TextBlob* takes entities into consideration by POS. The tweets we collected are mainly about stocks, so POS may not be suitable for our data (e.g. AAPL is more likely to appear than Apple Inc., and the analysis on tags LOCATION and PERSON are not very meaningful). Besides, *NLTK Vader* also considers emoticons so it works better for texts from social media. 
+*NLTK Vader* should be more suitable for our data.
+
+Both of these two approaches analyze the text according to its lexicon library. *NLTK Vader* focus on analyzing in context by considering the word terms and conjunctions, whereas *TextBlob* takes entities into consideration by POS. The tweets we collected are mainly about stocks, so POS may not be suitable for our data (e.g. AAPL is more likely to appear than Apple Inc., and the analysis on tags LOCATION and PERSON are not very meaningful). 
+
+Besides, *NLTK Vader* also considers emoticons so it works better for texts from social media. 
 
 
 
-## 2 Sentiment polarity scores
+## 2 Sentiment Polarity Scores and Accuracy
 
 <div align=center><img src ="./sentiment-testing/Distribution of Polarity Scores Class.png"/></div>
 
@@ -191,7 +196,7 @@ Both of these two approaches conclude that positive sentiment in tweets is great
 
 <div align=center><img width = '500' height ='300' src ="./sentiment-testing/The Difference of Polarity Score Class.png"/></div>
 
-200 of the 1123 tweets are recognized to be positive by both of these two approaches, and 29 and 492 are recognized to be negative and neutral. These two approaches have different results on the polarity of the remaining 402 tweets. *NLTK Vader* gives positive and negative sentiment score for the 151 and 89 tweets, but *TextBlob* says they are neutral. So, *NLTK Vader* seems to be more sensitive to our sample tweets than *TextBlob*.
+200 of the 1123 tweets are recognized to be positive by both of these two approaches, and 29 and 492 are recognized to be negative and neutral. They have different results on the polarity of the remaining 402 tweets. *NLTK Vader* gives positive and negative sentiment score for the 151 and 89 tweets, but *TextBlob* says they are neutral. So, *NLTK Vader* seems to be more sensitive to our sample tweets than *TextBlob*.
 
 After scoring these 402 tweets manually and comparing the results given by these two approaches, *NLTK Vader* gives the same sentiment score to 181 of the tweets whereas *TextBlob* gives the same sentiment score to 139 of the tweets.
 
