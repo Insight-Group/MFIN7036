@@ -161,7 +161,7 @@ def _least_check(self, valence, words_and_emoticons, i):
 
 <div align=center><img width = '150' height ='50' src ="./sentiment-testing/NV_equation.png"/></div>
 
-   where x is sum of valence scores of words in the sentences, and α is normalization constant (default value is 15).
+where x is sum of valence scores of words in the sentences, and α is normalization constant (default value is 15).
 
 
 ### 1.2 TextBlob
