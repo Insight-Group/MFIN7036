@@ -3,10 +3,15 @@ Followed by Data Reshaping and Preprocessing, we obtained a series of tokenized 
 
 ## 1. Process
 ### 1.1 Generating Frequency Set 
-Firstly, we use dictionary in Python to count the frequencies in the 'final_token' list obtained from data shaping. and increment the counter using loops. 
+Firstly, we add the company names into 'stopwords' list to obtain more accurate visual results. We also used dictionary in Python to count the frequencies in the 'final_token' list obtained from data shaping. and increment the counter using loops. 
 ```python
 import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
+
+stopwords = nltk.corpus.stopwords.words('english')
+newStopWords = ('Fosun','Bilibili','Luckin')
+stopwords.extend(newStopWords)
+print(stopwords)
 
 frequency = dict()
 
@@ -74,7 +79,8 @@ plt.show()
 ## 2. Results 
 The world could picture and frequency table generating from the frequency of words in Fosun tweets are shown as below:
 
-![Screenshot 2021-02-21 at 09 24 59](https://user-images.githubusercontent.com/78474798/108612799-e2f1aa80-7426-11eb-889e-844d6d445c7d.png)
+![Screenshot 2021-03-04 at 07 11 10](https://user-images.githubusercontent.com/78474798/109885224-1cdd6f00-7cb9-11eb-80a9-afbdff2e7607.png)
+
 
 ## 3. Problems 
 
