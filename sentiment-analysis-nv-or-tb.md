@@ -159,16 +159,16 @@ def _least_check(self, valence, words_and_emoticons, i):
 
 3. The compound score is computed by summing the valence scores of each word in the lexicon, adjusted according to the rules, and then normalized to be between -1 (most extreme negative) and +1 (most extreme positive). 
 
-<div align=center><img width = '100' height ='80' src ="./sentiment-testing/NV_equation.png"/></div>
+<div align=center><img width = '150' height ='80' src ="./sentiment-testing/NV_equation.png"/></div>
 
-where x is sum of valence scores of words in the sentences, and α is normalization constant (default value is 15).
+   where x is sum of valence scores of words in the sentences, and α is normalization constant (default value is 15).
 
 
 ### 1.2 TextBlob
 
 1. *TextBlob* also has a lexicon library, "en-sentiment.xml", an XML document that includes the different senses for the same word and identified by different ids. There are 2919 records collected by this lexicon library. *TextBlob* also handles negation (e.g. not) and modifier words (e.g very).
 
-<div align=center><img src ="./sentiment-testing/Distribution of Polarity Scores Class.png"/></div>
+<div align=center><img src ="./sentiment-testing/TB_lexicon library.png"/></div>
 
 2. *TextBlob* can identify different entities based on its entities library, "en-entities.txt" and tag phrases by Parts of Speech (POS).
 
@@ -183,7 +183,7 @@ Both of these two approaches analyze the text according to its lexicon library. 
 
 ## 2 Sentiment polarity scores
 
-<div align=center><img width = '400' height ='350' src ="./sentiment-testing/Distribution of Polarity Scores Class.png"/></div>
+<div align=center><img src ="./sentiment-testing/Distribution of Polarity Scores Class.png"/></div>
 
 Among 1123 tweets, the result given by *NLTK Vader* is that 390(34.73%), 142(12.64%) and 591(52.63%) are positive, negative and neutral respectively, while *TextBlob* says that 291(25.91%), 100(8.90%) and 732(65.18%) are positive, negative and neutral respectively. 
 
