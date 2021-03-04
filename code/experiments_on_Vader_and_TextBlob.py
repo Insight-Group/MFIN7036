@@ -63,19 +63,21 @@ df['TextBlob_polarity'] = pd.Series(TextBlob_polarity)
 
 # NLTK Vader
 NV_positive = len(df.query("NLTK_Vader_polarity > 0"))
-NV_negtive = len(df.query("NLTK_Vader_polarity < 0"))
-NV_netural = len(df)-NV_positive-NV_negtive
+NV_negative = len(df.query("NLTK_Vader_polarity < 0"))
+NV_neutral = len(df)-NV_positive-NV_negative
 # TextBlob
 TB_positive = len(df.query("TextBlob_polarity > 0"))
-TB_negtive = len(df.query("TextBlob_polarity < 0"))
-TB_netural = len(df)-TB_positive-TB_negtive
+TB_negative = len(df.query("TextBlob_polarity < 0"))
+TB_neutral = len(df)-TB_positive-TB_negative
 
 plt.subplots()
-plt.bar(['NV_positive','NV_negtive','NV_netural'],[NV_positive,NV_negtive,NV_netural])
-plt.bar(['TB_positive','TB_negtive','TB_netural'],[TB_positive,TB_negtive,TB_netural])
-for index,data in enumerate([NV_positive,NV_negtive,NV_netural,TB_positive,TB_negtive,TB_netural]):
+plt.bar(['NV_positive','NV_negative','NV_neutral'],[NV_positive,NV_negative,NV_neutral])
+plt.bar(['TB_positive','TB_negative','TB_neutral'],[TB_positive,TB_negative,TB_neutral])
+for index,data in enumerate([NV_positive,NV_negative,NV_neutral,TB_positive,TB_negative,TB_neutral]):
     plt.text(x=index , y =data+1 , s=f"{data}" , fontdict=dict(fontsize=11), ha='center')
 plt.xticks(rotation='vertical')
+plt.title('Distribution of Polarity Scores Class')
+plt.ylabel('Number of Tweets')
 
 
 # Comparison
@@ -109,6 +111,10 @@ plt.bar(index, value, color=colors)
 for index,data in enumerate([NVp_TBp, NVn_TBn, NV0_TB0, NVp_TBn, NVn_TBp, NVp_TB0, NVn_TB0, NV0_TBp, NV0_TBn]):
     plt.text(x=index , y =data+1 , s=f"{data}" , fontdict=dict(fontsize=11), ha='center')
 plt.xticks(rotation='vertical')
+plt.title('The Difference of Polarity Score Class judged by NLTK Vader and TextBlob')
+plt.ylabel('Number of Tweets')
+
+
 
 
 df_diff1 = df.query("NLTK_Vader_polarity > 0 and TextBlob_polarity <= 0")
