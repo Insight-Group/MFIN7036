@@ -20,21 +20,31 @@ def NLTK_Vader_sentiment_analysis(twitter_data_frame):
 
     sia = NLTK_Vader.SentimentIntensityAnalyzer()
         
+    NLTK_Vader_polarity_score = []
     NLTK_Vader_polarity = []
     
     for line in twitter_data_frame['Text']:
         
         tfidf_dict = twitter_data_frame[twitter_data_frame['Text']==line]['tfidf'].tolist()[0]
         
-        tweet_polarity = 0
+        polarity_score = 0
         
         for sent in twitter_data_frame[twitter_data_frame['Text']==line]['sent_tokens'].tolist()[0]:
             sentiment = sia.polarity_scores(sent, tfidf_dict)
-            tweet_polarity += sentiment['compound']
-        NLTK_Vader_polarity.append(tweet_polarity)
-       
-    
-    twitter_data_frame['NLTK_Vader_polarity'] = pd.Series(NLTK_Vader_polarity)
+            polarity_score += sentiment['compound']
+        
+        if polarity_score > 0:
+            NLTK_Vader_polarity.append('POSITIVE')
+        elif polarity_score < 0:
+            NLTK_Vader_polarity.append('NEGATIVE')
+        else:
+            NLTK_Vader_polarity.append('NEUTRAL')
+        
+        NLTK_Vader_polarity_score.append(polarity_score)
+        
+        
+    twitter_data_frame['NLTK_Vader_polarity'] = pd.Series(NLTK_Vader_polarity)    
+    twitter_data_frame['NLTK_Vader_polarity_score'] = pd.Series(NLTK_Vader_polarity_score)
     
     return twitter_data_frame
 

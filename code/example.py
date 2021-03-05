@@ -6,13 +6,11 @@ import pandas as pd
 # Dataframe with columns - UserScreenName,UserName,Timestamp,Text,Emojis,Comments,Likes,Retweets,Image link,Tweet URL
 data_frame = drp.read_file("../dataset/fusun-pharma-2020-twitter-dataset/fosun_pharma_2020.csv")
 
-# Column - final_token added to dataframe
+# Column - word_tokens and sent_tokens added to dataframe
 data_frame = drp.tokenize_and_add_column(data_frame)
 # Column - tfdif added to dataframe 
 data_frame = drp.calculate_tfidf_and_add_column(data_frame)
-
-
-# Column - NLTK_Vader_polarity added to dataframe
+# Column - NLTK_Vader_polarity and its score are added to dataframe
 data_frame = sa.NLTK_Vader_sentiment_analysis(data_frame)
 
 
