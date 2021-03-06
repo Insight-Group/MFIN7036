@@ -55,18 +55,20 @@ def lag_strategy(df_return, df_polarity, merge_on, shift_column, shift_mode, shi
         
     return df_test
 
-def graphical_regression(df_test, time_series, y1, y2):
+def graphical_regression(df_test, time_series, y_return, y_score):
     
     plt.rcParams["figure.figsize"] = (12,8)
     
+    df_test[y_score + '_modify'] = df_test[y_score]/(df_test[y_score].max())
+    
     ax1 = (df_test
-        .assign(date=df_test[time_series], y_1=df_test[y1], y_2=df_test[y2])
-        .plot(x=time_series, y=[y1, y2])
+        .assign(date=df_test[time_series], y1=df_test[y_return], y2=df_test[y_score + '_modify'])
+        .plot(x=time_series, y=[y_return, y_score + '_modify'])
         )
     plt.title("Stock Return vs Sentiment Polarity Score ")
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
-    plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
-    plt.gcf().autofmt_xdate()
+    # plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
+    # plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
+    # plt.gcf().autofmt_xdate()
 
     # ax1 = (df_test
     #     .assign(date=df_test['Date'], momentum=df_test['cum_ret']+1, polarity=df_test['NLTK_Vader_polarity_score'])
@@ -109,11 +111,10 @@ if __name__ == '__main__':
     df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date', 
                             shift_column='daily_return', shift_mode='lag', shift_period=1)   
         
-    graphical_regression(df_daily, time_series='Date', y1='daily_return_lag1', y2='NLTK_Vader_polarity_score')
+    graphical_regression(df_daily, time_series='Date', y_return='daily_return_lag1', y_score='NLTK_Vader_polarity_score')
     OLS_regression(df_daily, dep_variable='NLTK_Vader_polarity_score', indep_variable='daily_return_lag1')
     
-    
-    
+        
        
     # 2. Weekly strategy
     df_daily_return["year_week"] = [date.isocalendar()[:2] for date in df_600196.Date] 
@@ -130,20 +131,20 @@ if __name__ == '__main__':
     
     # 2.1 no lag
     df_weekly = pd.merge(df_weekly_return, df_weekly_polarity, how='outer', on=['year_week']).sort_values(by='year_week')  
-    graphical_regression(df_weekly, time_series='year_week', y1='weekly_cum_ret', y2='weekly_score')
+    graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret', y_score='weekly_score')
     OLS_regression(df_weekly, dep_variable='weekly_cum_ret', indep_variable='weekly_score')
     OLS_regression(df_weekly, dep_variable='weekly_score', indep_variable='weekly_cum_ret')
     
     # 2.2 return predict sentiment
     df_weekly = lag_strategy(df_weekly_return, df_weekly_polarity, merge_on='year_week',
                              shift_column='weekly_cum_ret', shift_mode='lag', shift_period=1)
-    graphical_regression(df_weekly, time_series='year_week', y1='weekly_cum_ret_lag1', y2='weekly_score')
+    graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret_lag1', y_score='weekly_score')
     OLS_regression(df_weekly, dep_variable='weekly_score', indep_variable='weekly_cum_ret_lag1')
     
     # 2.3 sentiment predict return
     df_weekly = lag_strategy(df_weekly_return, df_weekly_polarity, merge_on='year_week',
                              shift_column='weekly_score', shift_mode='lag', shift_period=1)
-    graphical_regression(df_weekly, time_series='year_week', y1='weekly_cum_ret', y2='weekly_score_lag1')
+    graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret', y_score='weekly_score_lag1')
     OLS_regression(df_weekly, dep_variable='weekly_cum_ret', indep_variable='weekly_score_lag1')
     
     
