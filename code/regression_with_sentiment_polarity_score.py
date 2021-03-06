@@ -23,7 +23,6 @@ def return_calculation(df_stock):
         
     df_stock['Date'] = [datetime.strptime(d, '%Y-%m-%d').date() for d in df_stock['Date']]  
     df_stock['daily_return'] = pd.Series(daily_return)
-    # df_stock['cum_ret'] = (df_stock['daily_return'] + 1).cumprod()-1
     
     return df_stock
 
@@ -75,7 +74,20 @@ def graphical_regression(df_test, time_series, y_return, y_score):
     
     # plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
     # plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
-    # plt.gcf().autofmt_xdate()  
+    # plt.gcf().autofmt_xdate()
+        
+    
+    df_test[y_score+'_cum']  = df_test[y_score].cumsum()
+    df_test[y_return+'_cum'] = (df_test[y_return] + 1).cumprod()
+    
+    df_test[y_score+'_cum' + '/max({})'.format(y_score+'_cum')] = df_test[y_score+'_cum']/(df_test[y_score+'_cum'].max())
+    df_test[y_return+'_cum' + '/max({})'.format(y_return+'_cum')] = df_test[y_return+'_cum']/(df_test[y_return+'_cum'].max())
+    
+    ax2 = (df_test
+        .assign(date=df_test[time_series], y1=df_test[y_return+'_cum' + '/max({})'.format(y_return+'_cum')], y2=df_test[y_score+'_cum' + '/max({})'.format(y_score+'_cum')])
+        .plot(x=time_series, y=[y_return+'_cum' + '/max({})'.format(y_return+'_cum'), y_score+'_cum' + '/max({})'.format(y_score+'_cum')])
+        )
+    plt.title("Stock Cumulative Return vs Sentiment Polarity Cumulative Score ")
     
 
 def OLS_regression(df_test, dep_variable, indep_variable):
