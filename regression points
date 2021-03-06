@@ -1,0 +1,3 @@
+对于时差的调整，将tweets时间先修改成GMT+8时区时区
+
+往前移和往后面移动 cumulative return/cumulative sentiment是要改的

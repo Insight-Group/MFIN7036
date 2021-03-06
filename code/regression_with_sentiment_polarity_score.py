@@ -73,7 +73,7 @@ def graphical_regression(df_test):
 
 def OLS_regression(df_test, y, x):
     print(smf.ols('{} ~ {}'.format(y,x) , data=df_test.dropna()).fit().summary())
-    
+ 
     
     
 if __name__ == '__main__':
@@ -107,4 +107,42 @@ if __name__ == '__main__':
     #                ).reset_index()
     
     # df_polarity['cum_pol'] = (df_polarity['Polarity'] + 1).cumprod()-1
+    
+
+
+
+
+    # blibli plolarity  US trading time 9：30-16：00, lag 8 hours 
+    df_twitter = pd.read_csv(r"D:\gitrepo\MFIN7036\dataset\test - bilibili.csv", index_col=False)   
+    df_daily_polarity = polarity_calculation(df_twitter, 'America/New_York', +8)
+    df_daily_polarity.dropna(subset = ["Date"], inplace=True)
+    # filter data within specific period, bilibili start on 2018-3-28, we spare one more month for further regression
+    start_date_obj = datetime.strptime('2018-2-28', '%Y-%m-%d').date()
+    df_daily_polarity = df_daily_polarity[df_daily_polarity.Date >= start_date_obj]  
+    # group polarity by year-month
+    df_monthly_polarity = df_daily_polarity.groupby(pd.DatetimeIndex(df_daily_polarity.Date).to_period("M")) \
+                          .apply(lambda x: pd.Series({'monthly_polarity': x['NLTK_Vader_polarity_score'].sum()})).reset_index()
+    
+    print(df_monthly_polarity.head())
+  
+    
+    # calculate the return
+    df_BILI = pd.read_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili-2018-2021-stock-dataset\BILI.csv", index_col=False)
+    df_BILI = return_calculation(df_BILI)
+    # group return by year-month (cumulative)
+    df_monthly_return = df_BILI.groupby(pd.DatetimeIndex(df_BILI.Date).to_period("M")) \
+                         .apply(lambda x: pd.Series({'monthly_return': ((x['daily_return'] + 1).product()-1)})).reset_index() 
+    print(df_monthly_return.head())
+
+    # Merge the monthly return and monthly polarity
+    df_test = pd.merge(df_monthly_return, df_monthly_polarity, how='outer', on=['Date']).sort_values(by='Date')  
+    # Run OLS regression
+    test_result = smf.ols('monthly_return ~ monthly_return', data=df_test).fit().summary()
+    print(test_result)
+
+
+
+
+    
+
     
