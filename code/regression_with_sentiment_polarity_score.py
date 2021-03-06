@@ -134,11 +134,7 @@ if __name__ == '__main__':
         
        
     # 2. Weekly strategy
-<<<<<<< HEAD
-    df_daily_return["year_week"] = [date.isocalendar()[:2] for date in df_daily_return] 
-=======
     df_daily_return["year_week"] = [date.isocalendar()[:2] for date in df_daily_return.Date] 
->>>>>>> 785d9cdee804b9353d62c7b585642409d38e181b
     df_daily_polarity["year_week"] = [date.isocalendar()[:2] for date in df_daily_polarity.Date] 
 
         
