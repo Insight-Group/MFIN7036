@@ -43,8 +43,13 @@ def polarity_calculation(df_data, trading_timezone, trading_timeshift):
     df_daily_polarity = df_data.groupby([df_data['Date'].dt.date])['NLTK_Vader_polarity_score'].sum().reset_index()
     # df_daily_count = df.groupby([df['Date'].dt.date, 'NLTK_Vader_polarity']).count()
     
+    # Specific on BiliBli, one month before LIST
+    start_date_obj = datetime.strptime('2018-2-28', '%Y-%m-%d').date()
+    df_daily_polarity = df_daily_polarity[df_daily_polarity.Date >= start_date_obj] 
+
     df_daily_polarity.dropna(subset = ["Date"], inplace=True)
     
+
     return df_daily_polarity
 
 
@@ -92,8 +97,9 @@ if __name__ == '__main__':
     # df_2196 = pd.read_csv("../dataset/fusun-pharma-2020-stock-dataset/2196.csv", index_col=False)
     # df_2196 = return_calculation(df_2196)
    
-    # # regression strategy----------------------------------------------------
 
+
+    # # regression strategy----------------------------------------------------
 
     # 1. Daily lag strategy - stock return to sentiment
     df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date', 
@@ -105,23 +111,22 @@ if __name__ == '__main__':
         
        
     # 2. Weekly strategy
-    df_daily_return["year_week"] = [date.isocalendar()[:2] for date in df_600196.Date] 
+    df_daily_return["year_week"] = [date.isocalendar()[:2] for date in df_daily_return] 
     df_daily_polarity["year_week"] = [date.isocalendar()[:2] for date in df_daily_polarity.Date] 
 
         
-    df_weekly_return = ((df_600196.groupby(["year_week"])
+    df_weekly_return = ((df_daily_return.groupby(["year_week"])
                             ).apply(lambda x: pd.Series({'weekly_cum_ret': ((x['daily_return'] + 1).product()-1)}))
                           ).reset_index() 
     
     df_weekly_polarity = ((df_daily_polarity.groupby(["year_week"])
                             ).apply(lambda x: pd.Series({'weekly_score': x['NLTK_Vader_polarity_score'].sum()}))
-                          ).reset_index()    
+                          ).reset_index()   
     
     # 2.1 no lag
     df_weekly = pd.merge(df_weekly_return, df_weekly_polarity, how='outer', on=['year_week']).sort_values(by='year_week')  
     graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret', y_score='weekly_score')
     OLS_regression(df_weekly, dep_variable='weekly_cum_ret', indep_variable='weekly_score')
-    OLS_regression(df_weekly, dep_variable='weekly_score', indep_variable='weekly_cum_ret')
     
     # 2.2 return predict sentiment
     df_weekly = lag_strategy(df_weekly_return, df_weekly_polarity, merge_on='year_week',
@@ -135,40 +140,32 @@ if __name__ == '__main__':
     graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret', y_score='weekly_score_lag1')
     OLS_regression(df_weekly, dep_variable='weekly_cum_ret', indep_variable='weekly_score_lag1')
     
-    
     # df_polarity['cum_pol'] = (df_polarity['Polarity'] + 1).cumprod()-1
-    
 
 
+    # 3. Monthly strategy
+    df_monthly_return = df_daily_return.groupby(pd.DatetimeIndex(df_BILI.Date).to_period("M")) \
+                         .apply(lambda x: pd.Series({'monthly_cum_ret': ((x['daily_return'] + 1).product()-1)})).reset_index() 
 
-
-    # blibli plolarity  US trading time 9：30-16：00, lag 8 hours 
-    df_twitter = pd.read_csv(r"D:\gitrepo\MFIN7036\dataset\test - bilibili.csv", index_col=False)   
-    df_daily_polarity = polarity_calculation(df_twitter, 'America/New_York', +8)
-    df_daily_polarity.dropna(subset = ["Date"], inplace=True)
-    # filter data within specific period, bilibili start on 2018-3-28, we spare one more month for further regression
-    start_date_obj = datetime.strptime('2018-2-28', '%Y-%m-%d').date()
-    df_daily_polarity = df_daily_polarity[df_daily_polarity.Date >= start_date_obj]  
-    # group polarity by year-month
     df_monthly_polarity = df_daily_polarity.groupby(pd.DatetimeIndex(df_daily_polarity.Date).to_period("M")) \
-                          .apply(lambda x: pd.Series({'monthly_polarity': x['NLTK_Vader_polarity_score'].sum()})).reset_index()
+                          .apply(lambda x: pd.Series({'monthly_score': x['NLTK_Vader_polarity_score'].sum()})).reset_index()  
     
-    print(df_monthly_polarity.head())
-  
-    
-    # calculate the return
-    df_BILI = pd.read_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili-2018-2021-stock-dataset\BILI.csv", index_col=False)
-    df_BILI = return_calculation(df_BILI)
-    # group return by year-month (cumulative)
-    df_monthly_return = df_BILI.groupby(pd.DatetimeIndex(df_BILI.Date).to_period("M")) \
-                         .apply(lambda x: pd.Series({'monthly_return': ((x['daily_return'] + 1).product()-1)})).reset_index() 
-    print(df_monthly_return.head())
+    # 3.1 no lag
+    df_monthly = pd.merge(df_monthly_return, df_monthly_polarity, how='outer', on=['Date']).sort_values(by='Date')  
+    graphical_regression(df_monthly, time_series='Date', y_return='monthly_cum_ret', y_score='monthly_score')
+    OLS_regression(df_weekly, dep_variable='monthly_cum_ret', indep_variable='monthly_score')
 
-    # Merge the monthly return and monthly polarity
-    df_test = pd.merge(df_monthly_return, df_monthly_polarity, how='outer', on=['Date']).sort_values(by='Date')  
-    # Run OLS regression
-    test_result = smf.ols('monthly_return ~ monthly_return', data=df_test).fit().summary()
-    print(test_result)
+    # 3.2 return predict sentiment
+    df_monthly = lag_strategy(df_monthly_return, df_monthly_polarity, merge_on='Date',
+                             shift_column='monthly_cum_ret', shift_mode='lag', shift_period=1)
+    graphical_regression(df_monthly, time_series='Date', y_return='monthly_cum_ret_lag1', y_score='monthly_score')
+    OLS_regression(df_weekly, dep_variable='monthly_score', indep_variable='monthly_cum_ret_lag1')
+
+    # 3.3 sentiment predict return
+    df_monthly = lag_strategy(df_monthly_return, df_monthly_polarity, merge_on='Date',
+                             shift_column='monthly_score', shift_mode='lag', shift_period=1)
+    graphical_regression(df_monthly, time_series='Date', y_return='monthly_cum_ret', y_score='monthly_score_lag1')
+    OLS_regression(df_monthly, dep_variable='monthly_cum_ret', indep_variable='monthly_score_lag1')
 
 
 
