@@ -31,16 +31,16 @@ def return_calculation(df_stock):
 def polarity_calculation(df_data, trading_timezone, trading_timeshift):     
     
     # convert string to timestamp (e.g. "2020-01-13T16:21:57.000Z" to Timestamp('2020-01-13 16:21:57'))
-    df_data["Date"] = [" ".join(line.split("T")).rstrip("Z") for line in df_data.Timestamp]
-    df_data["Date"] = [datetime.strptime(line, '%Y-%m-%d %H:%M:%S.%f') for line in df_data.Date]
+    df_data['Date'] = [" ".join(line.split("T")).rstrip("Z") for line in df_data.Timestamp]
+    df_data['Date'] = [datetime.strptime(line, '%Y-%m-%d %H:%M:%S.%f') for line in df_data.Date]
     
     # change to stock trading timezone
     timezone = pytz.timezone("Europe/London") # original time zone
-    df["Date"] = [timezone.localize(line) for line in df.Date]
-    df["Date"] = [line.astimezone(pytz.timezone(trading_timezone)) for line in df.Date]
-    df["Date"] = [line+timedelta(hours=int(trading_timeshift)) for line in df.Date]
+    df_data['Date'] = [timezone.localize(line) for line in df_data.Date]
+    df_data['Date'] = [line.astimezone(pytz.timezone(trading_timezone)) for line in df_data.Date]
+    df_data['Date'] = [line+timedelta(hours=int(trading_timeshift)) for line in df_data.Date]
     
-    df_daily_polarity = df.groupby([df['Date'].dt.date])['NLTK_Vader_polarity_score'].sum().reset_index()
+    df_daily_polarity = df_data.groupby([df_data['Date'].dt.date])['NLTK_Vader_polarity_score'].sum().reset_index()
     # df_daily_count = df.groupby([df['Date'].dt.date, 'NLTK_Vader_polarity']).count()
     
     return df_daily_polarity
@@ -80,8 +80,9 @@ if __name__ == '__main__':
     
     
     # polarity
-    df = pd.read_csv("../dataset/test - fusun-pharma.csv", index_col=False)
-    df_daily_polarity = polarity_calculation(df, 'Asia/Shanghai', +9)
+    df_twitter = pd.read_csv("../dataset/test - fusun-pharma.csv", index_col=False)   
+    df_daily_polarity = polarity_calculation(df_twitter, 'Asia/Shanghai', +9)
+    
      
     # stock - Shanghai: 600196
     df_600196 = pd.read_csv("../dataset/fusun-pharma-2020-stock-dataset/600196.csv", index_col=False)
