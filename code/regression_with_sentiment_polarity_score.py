@@ -23,7 +23,7 @@ def return_calculation(df_stock):
         
     df_stock['Date'] = [datetime.strptime(d, '%Y-%m-%d').date() for d in df_stock['Date']]  
     df_stock['daily_return'] = pd.Series(daily_return)
-    df_stock['cum_ret'] = (df_stock['daily_return'] + 1).cumprod()-1
+    # df_stock['cum_ret'] = (df_stock['daily_return'] + 1).cumprod()-1
     
     return df_stock
 
@@ -43,37 +43,37 @@ def polarity_calculation(df_data, trading_timezone, trading_timeshift):
     df_daily_polarity = df_data.groupby([df_data['Date'].dt.date])['NLTK_Vader_polarity_score'].sum().reset_index()
     # df_daily_count = df.groupby([df['Date'].dt.date, 'NLTK_Vader_polarity']).count()
     
-    return df_daily_polarity
+    df_daily_polarity.dropna(subset = ["Date"], inplace=True)
     
+    return df_daily_polarity
 
-def graphical_regression(df_test):
+
+def lag_strategy(df_return, df_polarity, merge_on, shift_column, shift_mode, shift_period):
+    
+    df_test = pd.merge(df_return, df_polarity, how='outer', on=merge_on).sort_values(by=merge_on)
+    df_test[shift_column + '_' + shift_mode + str(shift_period)] = df_test[shift_column].shift(shift_period)
+        
+    return df_test
+
+def graphical_regression(df_test, time_series, y_return, y_score):
     
     plt.rcParams["figure.figsize"] = (12,8)
+    
+    df_test[y_score + '_modify'] = df_test[y_score]/(df_test[y_score].max())
+    
     ax1 = (df_test
-        .assign(date=df_test['Date'], momentum=df_test['cum_ret']+1, polarity=df_test['NLTK_Vader_polarity_score'])
-        .plot(x='Date', y=['cum_ret', 'NLTK_Vader_polarity_score'])
+        .assign(date=df_test[time_series], y1=df_test[y_return], y2=df_test[y_score + '_modify'])
+        .plot(x=time_series, y=[y_return, y_score + '_modify'])
         )
-    plt.title("Cumularive Return vs Sentiment Polarity Score ")
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
-    plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
-    plt.gcf().autofmt_xdate()
-    # plt.savefig("./regression-result/graph_cum_ret_and_polarity.png")
-    
-    
-    ax2 = (df_test
-        .assign(date=df_test['Date'], momentum=df_test['daily_return'], polarity=df_test['NLTK_Vader_polarity_score'])
-        .plot(x='Date', y=['daily_return', 'NLTK_Vader_polarity_score'])
-        )
-    plt.title("Daily Return vs Sentiment Polarity Score ")
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
-    plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
-    plt.gcf().autofmt_xdate()
-    
+    plt.title("Stock Return vs Sentiment Polarity Score ")
+    # plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
+    # plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
+    # plt.gcf().autofmt_xdate()  
     
 
-def OLS_regression(df_test, y, x):
-    print(smf.ols('{} ~ {}'.format(y,x) , data=df_test.dropna()).fit().summary())
- 
+def OLS_regression(df_test, dep_variable, indep_variable):
+    print(smf.ols('{} ~ {}'.format(dep_variable, indep_variable) , data=df_test.dropna()).fit().summary())
+
     
     
 if __name__ == '__main__':
@@ -81,30 +81,60 @@ if __name__ == '__main__':
     
     # polarity
     df_twitter = pd.read_csv("../dataset/test - fusun-pharma.csv", index_col=False)   
-    df_daily_polarity = polarity_calculation(df_twitter, 'Asia/Shanghai', +9)
-    
+    df_daily_polarity = polarity_calculation(df_twitter, 'Asia/Shanghai', +9)     
      
     # stock - Shanghai: 600196
     df_600196 = pd.read_csv("../dataset/fusun-pharma-2020-stock-dataset/600196.csv", index_col=False)
-    df_600196 = return_calculation(df_600196)
-    # stock - HK: 2196
-    df_2196 = pd.read_csv("../dataset/fusun-pharma-2020-stock-dataset/2196.csv", index_col=False)
-    df_2196 = return_calculation(df_2196)
+    df_daily_return = return_calculation(df_600196)
+    
+    
+    # # stock - HK: 2196
+    # df_2196 = pd.read_csv("../dataset/fusun-pharma-2020-stock-dataset/2196.csv", index_col=False)
+    # df_2196 = return_calculation(df_2196)
    
-    # regression---------------------------------------------------------------
-    df_600196_polarity = pd.merge(df_600196, df_daily_polarity, how='outer', on=['Date']).sort_values(by='Date')
-    
-    # graphical overview
-    graphical_regression(df_600196_polarity)
-    
-    # ols: stock return to sentiment
-    df_600196_polarity['daily_return_lag1'] = df_600196_polarity['daily_return'].shift(1)
-    OLS_regression(df_600196_polarity, 'NLTK_Vader_polarity_score', 'daily_return_lag1')
+    # # regression strategy----------------------------------------------------
+
+
+    # 1. Daily lag strategy - stock return to sentiment
+    df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date', 
+                            shift_column='daily_return', shift_mode='lag', shift_period=1)   
         
+    graphical_regression(df_daily, time_series='Date', y_return='daily_return_lag1', y_score='NLTK_Vader_polarity_score')
+    OLS_regression(df_daily, dep_variable='NLTK_Vader_polarity_score', indep_variable='daily_return_lag1')
     
-    # df_data['Date'] = pd.Series(Date)
-    # df_polarity = (df_data.groupby(['Date']).apply(lambda x: pd.Series({'Polarity': x['TextBlob_polarity'].sum()}))
-    #                ).reset_index()
+        
+       
+    # 2. Weekly strategy
+    df_daily_return["year_week"] = [date.isocalendar()[:2] for date in df_600196.Date] 
+    df_daily_polarity["year_week"] = [date.isocalendar()[:2] for date in df_daily_polarity.Date] 
+
+        
+    df_weekly_return = ((df_600196.groupby(["year_week"])
+                            ).apply(lambda x: pd.Series({'weekly_cum_ret': ((x['daily_return'] + 1).product()-1)}))
+                          ).reset_index() 
+    
+    df_weekly_polarity = ((df_daily_polarity.groupby(["year_week"])
+                            ).apply(lambda x: pd.Series({'weekly_score': x['NLTK_Vader_polarity_score'].sum()}))
+                          ).reset_index()    
+    
+    # 2.1 no lag
+    df_weekly = pd.merge(df_weekly_return, df_weekly_polarity, how='outer', on=['year_week']).sort_values(by='year_week')  
+    graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret', y_score='weekly_score')
+    OLS_regression(df_weekly, dep_variable='weekly_cum_ret', indep_variable='weekly_score')
+    OLS_regression(df_weekly, dep_variable='weekly_score', indep_variable='weekly_cum_ret')
+    
+    # 2.2 return predict sentiment
+    df_weekly = lag_strategy(df_weekly_return, df_weekly_polarity, merge_on='year_week',
+                             shift_column='weekly_cum_ret', shift_mode='lag', shift_period=1)
+    graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret_lag1', y_score='weekly_score')
+    OLS_regression(df_weekly, dep_variable='weekly_score', indep_variable='weekly_cum_ret_lag1')
+    
+    # 2.3 sentiment predict return
+    df_weekly = lag_strategy(df_weekly_return, df_weekly_polarity, merge_on='year_week',
+                             shift_column='weekly_score', shift_mode='lag', shift_period=1)
+    graphical_regression(df_weekly, time_series='year_week', y_return='weekly_cum_ret', y_score='weekly_score_lag1')
+    OLS_regression(df_weekly, dep_variable='weekly_cum_ret', indep_variable='weekly_score_lag1')
+    
     
     # df_polarity['cum_pol'] = (df_polarity['Polarity'] + 1).cumprod()-1
     
@@ -144,5 +174,13 @@ if __name__ == '__main__':
 
 
     
+
+
+    
+
+    
+
+    
+
 
     
