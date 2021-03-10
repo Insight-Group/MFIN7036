@@ -75,9 +75,9 @@ def tokenize_and_add_column(twitter_data_frame):
         # Genereate tokens from raw content
         words = word_tokenize(line)
         sents = sent_tokenize(line)
-        # Filter non-english words
+        # Filter out non-english words
         english_words = [word for word in words if word.encode().isalpha()]
-        # Filter stop words like for, do, an, etc
+        # Filter out stopwords like for, do, an, etc
         tags = nltk.pos_tag(english_words)
         nonstop_words = [word for word, pos in tags if not word.lower() in set(stopwords.words('english'))]
         word_tokens = [wl.lemmatize(word, get_wordnet_pos(word)) for word in nonstop_words]
