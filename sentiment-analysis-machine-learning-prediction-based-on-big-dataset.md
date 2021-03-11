@@ -1,4 +1,4 @@
-# Machine learning approaches: Prediction Based on A Big Dataset
+# Machine learning approaches: Prediction based on a big dataset
 
 Previously, we built three machine learning models to predict the sentiment of tweets of Fosun Pharma in 2020. We splitted the training dataset to train part and test part, and calculated the accuracy of sentiment prediction of the tweets in the test part for each model. We are now training the models with a big dataset with 1.6 million tweets and then testing their performance for sentiment prediction of all tweets of Fosun Pharma in 2020.
 
