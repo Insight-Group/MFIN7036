@@ -231,4 +231,3 @@ if __name__ == '__main__':
     #graphical_regression(df_monthly, time_series='Date', y_return='monthly_cum_ret', y_score='monthly_score_lag2')
     OLS_regression(df_monthly, dep_variable='monthly_cum_ret', indep_variable='monthly_score_lag2')
     print('***************3.3 sentiment predict return lag_2******************')
-d
