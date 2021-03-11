@@ -260,12 +260,12 @@ if __name__ == '__main__':
     polarity_sell =-1
     return_buy=0.02
     return_sell=0.1
-    
+
     # # df_daily['point']=''
     # # df_daily['point'] = ['buy' for in df_daily if df_daily[(df_daily['polarity_change'] > x) & (df_daily['daily_return'] < y)]]
     # # df_daily.loc[(df_daily['polarity_change'] > 1) & (df_daily['daily_return'] < 0.1)]['point'] = pd.Series(['buy'])
     # # df_daily['point'] = [i for i in df_daily['polarity_change'] j in df_daily['daily_return'] if (i > x) & (j < y)]
-    
+
     Trade=[]
     df_daily = df_daily.reset_index()
     for i in range(len(df_daily)-1):
@@ -279,6 +279,3 @@ if __name__ == '__main__':
             Trade.append('')
             
     df_daily['Trade'] = pd.Series(Trade)
-    
-    
-    df_daily.to_csv("./test.csv")
