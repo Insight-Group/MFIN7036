@@ -1,4 +1,4 @@
-# Text Processing and Sentiment Analysis
+# Lexicon-based approaches: First attempt
 
 From previous data processing, we filtered english tweets and tokenized each tweet by using meaningful words. 
 

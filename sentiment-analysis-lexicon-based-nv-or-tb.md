@@ -1,4 +1,4 @@
-# Sentiment Analysis: NLTK Vader or TextBlob?
+# Lexicon-based approaches: NLTK Vader or TextBlob?
 
 From previous sentiment analysis on tweets of Fosun Pharma in 2020, the sentiment polarity of the same tweet judged by *NLTK Vader* and *TextBlob* is very different. Besides, *NLTK Vader* cannot recognize the sentiment of tokenized words. This blog discusses the main differences between these two sentiment analysis approaches and shows the accuracy of them based on the tweets of Fosun Pharma in 2020.
 
