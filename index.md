@@ -22,7 +22,7 @@
 
 ### Ⅳ Regression Strategies
 
-- [Regression with Sentiment Polarity Scores](regression-with-sentiment-polarity-scores.md)
+- [Regression: First Attempt](regression-first-attempt.md)
 
 
 ### Ⅴ Say Something
