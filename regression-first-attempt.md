@@ -1,11 +1,9 @@
-# Regression with Sentiment Polarity Scores
+# Regression: First Attempt
 
-With the sentiment polarity scores obtained from Text Processing and Sentiment Analysis procedure, we are now going to investigate the relationship between the returns and the sentiment polarity scores. 
-
+With the sentiment polarity scores obtained from Sentiment Analysis procedure, we are now going to investigate the relationship between the stock cumulative return and the daily sentiment polarity score. 
 
 
 ## 1 Data Preparation
-
 
 ### 1.1 Daily Sentiment Polarity Scores
 
@@ -60,4 +58,4 @@ From the graphical method, we can clearly see the stock cumulative return is aff
 
 <div align=center><img width = '500' height ='350' src ="./regression-result/ols_cum_ret_and_polarity.png"/></div>
 
-From OLD method, the R-Squared value and the probability of Omnibus are very low, which means OLD method is not very suitable for our data. We cannot conclude any findings from OLD method.
+From OLS method, the R-Squared value is low but P value of variable `Polarity` is small enough (<5%), which means OLS method may not be suitable for our data, but the variable `Polarity` is significant in this regression model.

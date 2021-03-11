@@ -1,8 +1,8 @@
 # Lexicon-based approaches: First attempt
 
-From previous data processing, we filtered english tweets and tokenized each tweet by using meaningful words. 
+From data preprocessing, we removed urls, @ references and '#' from tweets, filtered out non-english words and stop wordstweets, and combined the different grammatical forms of the same words by implementing stemming and lemmatization. The next stage is sentiment analysis.
 
-NLTK Vader and TextBlob are the most popular tools used to analyse sentiment from text. At this stage, we apply both of these two tools for our tokenized words which are listed at the `final_token` column of our twitter dataframe.
+NLTK Vader and TextBlob are the most popular tools used to analyse sentiment from text. At this stage, we apply both of these two tools for our tokenized words which are listed at the `word_tokens` column of our twitter dataframe.
 
 
 ## Approach 1: NLTK Vader
@@ -15,7 +15,7 @@ sia = SentimentIntensityAnalyzer()
     
 NLTK_Vader_polarity = []
 
-for line in twitter_data_frame['final_token']:
+for line in twitter_data_frame['word_tokens']:
     sentiment = sia.polarity_scores(line)
     NLTK_Vader_polarity.append(sentiment)
 
@@ -24,9 +24,11 @@ twitter_data_frame['NLTK_Vader_polarity'] = pd.Series(NLTK_Vader_polarity)
 
 ### 1.2 Attempt Result
 
-Before applying to the `final_token` column, this tool is used to analyse the sentiment of the `Text` column which contains all the raw text of each tweet, for the purpose of testing the sensitivity. Different polarity scores are produced for different tweets and the results seem to be reasonable. 
+Before applying to the `word_tokens` column, this tool is used to analyse the sentiment of the `Text` column which contains raw text of each tweet for the purpose of testing the sensitivity. Different polarity scores are produced for different tweets and the results seem to be reasonable. 
 
-With the confidence of application of this tool, we test the `final_token` column. However, instead of producing different polarity scores, it shows that all tokenized word sets are neutral. 
+With the confidence of application of this tool, we test the `word_tokens` column. However, instead of producing different polarity scores, it shows that all the tokenized words are neutral. 
+
+<div align=center><img src ="./sentiment-testing/first attempt_vader.png"/></div>
 
 
 ## Approach 2: TextBlob
@@ -37,7 +39,7 @@ With the confidence of application of this tool, we test the `final_token` colum
 from textblob import TextBlob
 TextBlob_polarity = []
 
-for line in twitter_data_frame['final_token']:
+for line in twitter_data_frame['word_tokens']:
     [polarity, subjectivity] = list(TextBlob(line).sentiment)
     TextBlob_polarity.append(polarity)
     
@@ -46,9 +48,9 @@ twitter_data_frame['TextBlob_polarity'] = pd.Series(TextBlob_polarity)
 
 ### 2.2 Attempt Result
 
-The same procedure as before, this tool is used to analyse sentiment of the raw tweet text before applying to the `final_token` column. It produces the corresponding polarity scores for individual tweets, but the results are very different from that obtained by *NLTK Vader*.
+The same procedure as before, this tool is used to analyse sentiment of the raw tweet text before applying to the `word_tokens` column. It produces the corresponding polarity scores for individual tweets, but the results are very different from that obtained by *NLTK Vader*.
 
-While we are applying this tool to the `final_token` column, it is also sensitive to our tokenized word sets. We proceed the regression procedure with these results at this stage.
+While we are applying this tool to the `word_tokens` column, it is also sensitive to our tokenized word sets. We proceed the regression procedure with these results at this stage.
 
 
 ## 3. Things to Be Improved

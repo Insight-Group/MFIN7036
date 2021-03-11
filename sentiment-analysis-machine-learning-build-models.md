@@ -107,7 +107,7 @@ def Support_Vector_Machines(df_test_text, df_training_text, df_training_target):
     return prediction_svc
 ```
 
-# 3. Accuracy of Three Models
+## 3. Accuracy of Three Models
 
 
 
@@ -115,7 +115,7 @@ def Support_Vector_Machines(df_test_text, df_training_text, df_training_target):
 
 
 
-# References:
+## References:
 
 1. Ottesen, C. 2017, *Comparison between Naïve Bayes and Logistic Regression*, viewed 11 March 2011, <https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/>.
 

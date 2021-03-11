@@ -1,16 +1,16 @@
 # Lexicon-based approaches: NLTK Vader or TextBlob?
 
-From previous sentiment analysis on tweets of Fosun Pharma in 2020, the sentiment polarity of the same tweet judged by *NLTK Vader* and *TextBlob* is very different. Besides, *NLTK Vader* cannot recognize the sentiment of tokenized words. This blog discusses the main differences between these two sentiment analysis approaches and shows the accuracy of them based on the tweets of Fosun Pharma in 2020.
+From previous sentiment analysis on tweets of Fosun Pharma in 2020, the sentiment polarity of the same tweet judged by *NLTK Vader* and *TextBlob* is different. Besides, *NLTK Vader* cannot recognize the sentiment of tokenized words. This blog discusses the main differences between these two sentiment analysis approaches and shows the accuracy of them based on the tweets of Fosun Pharma in 2020.
 
 ## 1 Main Features
 
 ### 1.1 NLTK Vader
 
-1. *NLTK Vader* is based on lexicon of sentiment-related words. Each words in the lexicon is rated whether it is positive or negative. There are 7052 words in its lexicon library "vader_lexicon.txt" with predetermined measures. 
+1. *NLTK Vader* is based on lexicon of sentiment-related words. Each words in the lexicon is rated whether it is positive or negative. There are 7052 words in its lexicon library `vader_lexicon.txt` with predetermined measures. 
 
-2. When it comes to analysing comments or text from social media, the sentiment of the sentence changes when considering context. Vader takes this into account along with emoticons(e.g. smileys is included in its lexicon), punctuation emphasis(e.g. ??? and !!!), degree modifiers, capitalization, idoms, negation words, polarity shift due to conjunctions(e.g. but) etc and hence it is a better option when it comes to tweets analysis and their sentiments.
+2. When it comes to analysing comments or text from social media, the sentiment of the sentence changes when considered in context. Vader takes this into account along with emoticons(e.g. smileys is included in its lexicon), punctuation emphasis(e.g. ??? and !!!), degree modifiers, capitalization, idoms, negation words, polarity shift due to conjunctions(e.g. but) etc and hence it is a better option when it comes to tweet analysis.
 
-Example of relevant codes are shown as follows:
+Relevant codes are shown as follows:
 
 ```python
 
@@ -166,12 +166,12 @@ where x is sum of valence scores of words in the sentences, and α is normalizat
 
 ### 1.2 TextBlob
 
-1. *TextBlob* also has a lexicon library, "en-sentiment.xml", an XML document that includes the different senses for the same word and identified by different ids. There are 2919 records collected by this lexicon library. *TextBlob* also handles negation (e.g. not) and modifier words (e.g very).
+1. *TextBlob* also has a lexicon library, `en-sentiment.xml`, an XML document that includes the different senses for the same word and identified by different ids. There are 2919 records collected by this lexicon library. *TextBlob* also handles negation (e.g. not) and modifier words (e.g very).
 
 An example of the word entries in lexicon library:
 <div align=center><img src ="./sentiment-testing/TB_lexicon library.png"/></div>
 
-2. *TextBlob* can identify different entities based on its entities library, "en-entities.txt" and tag phrases by Parts of Speech (POS).
+2. *TextBlob* can identify different entities based on its entities library, `en-entities.txt` and tag phrases by Parts of Speech (POS).
 
 3. When calculating sentiment for a single word, *TextBlob* simply takes average of different entries for the same word. *TextBlob* goes along finding words and phrases it can assign polarity and subjectivity to, and it averages them all together for longer text. (e.g. multiply polarity by negation's measure , the inverse intensity of the modifier enters for both polarity and subjectivity.)
 
@@ -180,7 +180,7 @@ An example of the word entries in lexicon library:
 
 *NLTK Vader* should be more suitable for our data.
 
-Both of these two approaches analyze the text according to its lexicon library. *NLTK Vader* focus on analyzing in context by considering the word terms and conjunctions, whereas *TextBlob* takes entities into consideration by POS. The tweets we collected are mainly about stocks, so POS may not be suitable for our data (e.g. AAPL is more likely to appear than Apple Inc., and the analysis on tags LOCATION and PERSON are not very meaningful). 
+Both of the two approaches analyze the text according to thier lexicon library. *NLTK Vader* focus on analyzing in context by considering the word terms and conjunctions, whereas *TextBlob* takes entities into consideration by POS. The tweets we collected are mainly about stocks, so POS may not be suitable for our data (e.g. AAPL is more likely to appear than Apple Inc., and the analysis on tags LOCATION and PERSON are not very meaningful). 
 
 Besides, *NLTK Vader* also considers emoticons so it works better for texts from social media. 
 
