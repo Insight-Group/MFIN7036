@@ -90,6 +90,7 @@ df_monthly_return = df_daily_return.groupby(pd.DatetimeIndex(df_daily_return.Dat
 ```
 # regression
 - Example: plot the daily sentiment and return 
+
 ![](./final-regression-result/final-result.jpg)
 
 - Will current return affect future sentiment more or current return is affected by previous sentiment more? In our model, to testify the former argument, we need to shift our daily stock return by one row in the DataFrame to match previous return with current sentiment, and to testify the latter one, we need to shift the sentiment column. Besides, to know whether the correlation between daily return and daily sentiment is strong enough or not, we also tried to explore the correlation based on weekly cumulative data and monthly cumulative data.
