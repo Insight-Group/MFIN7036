@@ -28,7 +28,7 @@ Before applying to the `word_tokens` column, this tool is used to analyse the se
 
 With the confidence of application of this tool, we test the `word_tokens` column. However, instead of producing different polarity scores, it shows that all the tokenized words are neutral. 
 
-<div align=center><img src ="./sentiment-testing/first attempt_vader.png"/></div>
+<div align=center><img width = '200' height ='50' src ="./sentiment-testing/first attempt_vader.png"/></div>
 
 
 ## Approach 2: TextBlob

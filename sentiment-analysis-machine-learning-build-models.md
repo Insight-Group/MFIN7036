@@ -1,6 +1,10 @@
 # Machine learning approaches: Build NB, LR, SVM models
 
-Machine learning is another feasible way for sentiment analysis. We build three machine learning models to predict the sentiment of tweets. We start from the twitter dataset of Fusun Pharma. After calculating the accuracy of these three models, we will use the most efficient model to predict the sentiment of tweets in other dataset. 
+Machine learning is another feasible way for sentiment analysis. 
+
+<div align=center><img width = '500' height ='300' src ="./sentiment-testing/machine_learning_models.png"/></div>
+
+There are a lot of machine learning models are available from scikit-learn package in python library. We build three main models, Naïve Bayes Model, Logistics Regression Model and SVM Model, to predict the sentiment of tweets. We start from the twitter dataset of Fusun Pharma. After calculating the accuracy of these three models, we will use the most efficient model to predict the sentiment of tweets in other dataset. 
 
 ## 1. Generate Training Dataset
 
@@ -33,7 +37,7 @@ The variable `tf_vector` will also further be used to predict unseen trending da
 
 ## 2. Machine Learning Models
 
-### 2.1 Naive Bayes Model
+### 2.1 Naïve Bayes Model
 
 Naïve Bayes is a generative model and assumes all the features to be conditionally independent. So, if some of the features are in fact dependent on each other, the prediction might be poor.(Ottesen, 2017)
 
