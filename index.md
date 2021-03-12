@@ -23,6 +23,7 @@
 ### Ⅳ Regression Strategies
 
 - [Regression: First Attempt](regression-first-attempt.md)
+- [Regression: Our Final Method](regression-with-sentiment-polarity-scores-final-strategy.md)
 
 
 ### Ⅴ Say Something
