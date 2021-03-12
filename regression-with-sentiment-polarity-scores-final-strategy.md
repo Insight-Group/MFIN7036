@@ -5,7 +5,7 @@ About regression, we tried to find the implicit relationship between sentiment a
 The most intuitive idea came to our mind was that return would have correlation with sentiment within the same day. It would not be hard for us to get the result, but the problem is that how to evaluate our result?  Probably we need to run more regression with different dataset and compare them.
 
 ## 2.1 Sentiment Calculation
-> Daily
+**Daily**
 To sum up the whole day's sentiment polarity, we need to finish two steps:
 - Step 1 - Transfer the time zone from GMT+0 to US.
 - Step 2 - We define twitter sentiment from 16:00PM(day_t) to 16:00PM(dat_t+1) as an intact daily sentiment; for easier calculation, we shift the tweet's time 8 hours later so that we can sum up the whole day's sentiment just by the 'groupby'(method) the 'Date'.
@@ -37,7 +37,7 @@ def polarity_calculation(df_data, trading_timezone, trading_timeshift):
 
     return df_daily_polarity
 ```
-> Weekly
+**Weekly**
 - After trimming the daily data, we can just leverage the 'isocalendar' method to add up the whole week's sentiment.
 - code
 ```python
@@ -46,7 +46,7 @@ df_weekly_polarity = ((df_daily_polarity.groupby(["year_week"])
                          ).apply(lambda x: pd.Series({'weekly_score': x['NLTK_Vader_polarity_score'].sum()}))
                        ).reset_index() 
 ```
-> Monthly
+**Monthly**
 - We also directly utilize DatetimeIndex.to_period('M') to accumulate the monthly data
 - code
 ```python
@@ -55,7 +55,7 @@ df_monthly_polarity = df_daily_polarity.groupby(pd.DatetimeIndex(df_daily_polari
 ```
 
 ## 2.1 Return Calculation
-> daily
+**daily**
 - return is calculated between two successive trading days' close price
 ```python
 def return_calculation(df_stock):
@@ -72,7 +72,7 @@ def return_calculation(df_stock):
     
     return df_stock
 ```
-> weekly
+**weekly**
 - Very similar to the method used in sentiment calculation
 - code
 ```python
@@ -81,7 +81,7 @@ df_weekly_return = ((df_daily_return.groupby(["year_week"])
                              ).apply(lambda x: pd.Series({'weekly_cum_ret': ((x['daily_return'] + 1).product()-1)}))
                            ).reset_index() 
 ```
-> monthly
+**monthly**
 - Very similar to the method used in sentiment calculation
 - code
 ```python
@@ -96,34 +96,34 @@ df_monthly_return = df_daily_return.groupby(pd.DatetimeIndex(df_daily_return.Dat
 - Will current return affect future sentiment more or current return is affected by previous sentiment more? In our model, to testify the former argument, we need to shift our daily stock return by one row in the DataFrame to match previous return with current sentiment, and to testify the latter one, we need to shift the sentiment column. Besides, to know whether the correlation between daily return and daily sentiment is strong enough or not, we also tried to explore the correlation based on weekly cumulative data and monthly cumulative data.
 
 - codes
-> daily ```sentiment and return within the same day```
+**daily ```sentiment and return within the same day```**
 ```python
 df_daily = pd.merge(df_daily_return, df_daily_polarity, how='outer', on=['Date']).sort_values(by='Date')  
 graphical_regression(df_daily, time_series='Date', y_return='daily_return', y_score='NLTK_Vader_polarity_score')
 OLS_regression(df_daily, dep_variable='daily_return', indep_variable='NLTK_Vader_polarity_score')
 ```
-> daily ```sentiment(one day ago) affects the current return```
+**daily ```sentiment(one day ago) affects the current return```**
 ```python 
 df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date',
                            shift_column='NLTK_Vader_polarity_score', shift_mode='lag', shift_period=1)
 graphical_regression(df_daily, time_series='Date', y_return='daily_return', y_score='NLTK_Vader_polarity_score_lag1')
 OLS_regression(df_daily, dep_variable='daily_return', indep_variable='NLTK_Vader_polarity_score_lag1')
 ```
-> daily ```sentiment(two day ago) affects the current return```
+**daily ```sentiment(two day ago) affects the current return```**
 ```python 
 df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date',
                            shift_column='NLTK_Vader_polarity_score', shift_mode='lag', shift_period=2)
 graphical_regression(df_daily, time_series='Date', y_return='daily_return', y_score='NLTK_Vader_polarity_score_lag2')
 OLS_regression(df_daily, dep_variable='daily_return', indep_variable='NLTK_Vader_polarity_score_lag2')
 ```
-> daily ```current return affects the sentiment(one day after)```
+**daily ```current return affects the sentiment(one day after)```**
 ```python
 df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date',
                            shift_column='daily_return', shift_mode='lag', shift_period=1)
  graphical_regression(df_daily, time_series='Date', y_return='daily_return_lag1', y_score='NLTK_Vader_polarity_score')
 OLS_regression(df_daily, dep_variable='daily_return_lag1', indep_variable='NLTK_Vader_polarity_score')
 ```
-> daily ```current return affects the sentiment(two days after)```
+**daily ```current return affects the sentiment(two days after)```**
 ```python
 df_daily = lag_strategy(df_daily_return, df_daily_polarity, merge_on='Date',
                            shift_column='daily_return', shift_mode='lag', shift_period=2)
