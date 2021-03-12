@@ -4,7 +4,7 @@ The downloaded tweets are barely basic raw data. To use it for further research,
 
 ## 1 Tokenization
 
-Tokenization is the process of splitting up a text into smaller parts, also called BoW(bag of word). In our case, we processed on the `Text` column of our downloaded tweets CSV file and generated the `word_tokens`, `sent_tokens` and `processed_text` columns with tokens split and filtered from the `Text` column.
+Tokenization is the process of splitting up a text into smaller parts, also called BoW(bag of word). In our case, we processed on the `Text` column of our downloaded tweets CSV file and generated the `word_tokens`, `sent_tokens` and `processed_text` columns with tokens splitted and filtered from the `Text` column.
 
 ```python
 def tokenize_and_add_column(twitter_data_frame):
@@ -100,7 +100,7 @@ def calculate_tfidf_and_add_column(twitter_data_frame):
     print("*****************************")
     print('Print example tfidf of first row')
     print(twitter_data_frame['tfidf'][0])
-    
+
     return twitter_data_frame
 ```
 
