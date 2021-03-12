@@ -91,7 +91,7 @@ df_monthly_return = df_daily_return.groupby(pd.DatetimeIndex(df_daily_return.Dat
 # regression
 - Example: plot the daily sentiment and return 
 
-<div align=center>![](./final-regression-result/final-result.jpg)
+![](./final-regression-result/final-result.jpg)
 
 - Will current return affect future sentiment more or current return is affected by previous sentiment more? In our model, to testify the former argument, we need to shift our daily stock return by one row in the DataFrame to match previous return with current sentiment, and to testify the latter one, we need to shift the sentiment column. Besides, to know whether the correlation between daily return and daily sentiment is strong enough or not, we also tried to explore the correlation based on weekly cumulative data and monthly cumulative data.
 
@@ -133,7 +133,7 @@ OLS_regression(df_daily, dep_variable='daily_return_lag2', indep_variable='NLTK_
 - weekly and monthly data can be processed like daily data
 
 - regression result
-<div align=center>![](./final-regression-result/regression-result.png)
+![](./final-regression-result/regression-result.png)
 
 # How can we analyze our regression result?
 - From the above picture, we could see that the positive correlation between current monthly return and current monthly sentiment is the most significant, but if we take a look at the result of the daily data, we would also find that within the same day, sentiment and return has significant correlation. However, the most significant relationship could be found in return predicting sentiment, which means that the following several days' sentiment could be highly correlated with current day's return.
