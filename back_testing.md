@@ -8,11 +8,10 @@
 - This is the area we need to try again and again. As the sentiment will change its scale much more if the period is so long, we select data according to monthly rolling basis. If today's sentiment is over 75% quantile of the past 30 days, we view it as a high point. If today's sentiment is under 25% quantile of the past 30 days, we view it as a low point. Maybe '30 days' and '75%/25%' are not good standards, but this is just a good perspective, we could try more and more to find suitable standards.
 
 - Code:
-```python
 
+```python
 # Sentiment reach 75% high in recent 1 month, we view this as buying signal.
 # Sentiment reach 25% low in recent 1 month, we view this as selling signal.
-
 def judgement_point(df):
     Trade = []
     for i in range(30,len(df)):
@@ -40,6 +39,7 @@ def judgement_point(df):
 - we also count our investment and discount our cashflow to the first investment point. We compare the return from buy-and-hold strategy commencing at the same time.
 
 - Code:
+
 ```python
 bank_acc = 0
 invest_total = 0
@@ -70,11 +70,9 @@ for i in range(len(df_backtesting)):
 
         bank_acc = bank_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
         # still don't need to set stock_acc, because investor will buy stock and return them
-
 print(bank_acc)
 print(stock_acc)
 print(invest_total)
 ```
-
 # Result
 - 还没写
