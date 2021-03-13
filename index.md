@@ -24,7 +24,7 @@
 
 - [Regression: First attempt](regression-first-attempt.md)
 - [Regression: Our final method](regression-with-sentiment-polarity-scores-final-strategy.md)
-- [Regression: SVM model](SVM-model.md)
+- [Regression: SVM model](SVM_model.md)
 
 ### Ⅴ Say Something
 
