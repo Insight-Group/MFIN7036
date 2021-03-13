@@ -1,43 +1,66 @@
 import pandas as pd
 
-#但是要记住，用过去一年的数值去找，找到基准之后用未来的一年去测
-#可以规定sentiment大于75%，同时return小于25%为买点：
-sentiment_high = df_daily.polarity_change(0.75)
-return_low = df_daily.daily_return(0.25)
-#可以规定sentiment小于25%，同时return大于75%为卖点：
-sentiment_high = df_daily.polarity_change(0.25)
-return_low = df_daily.daily_return(0.75)
-#先找75% 和 25%的基准在哪里？
+# Sentiment reach 75% high in recent 1 month, we view this as buying signal.
+# Sentiment reach 25% low in recent 1 month, we view this as selling signal.
+def judgement_point(df):
+    Trade = []
+    for i in range(30,len(df)):
+
+        # settle the value which could be viewed as high or low
+        sentiment_high = df.loc[i-30:i,'Vader_Text_polarity'].quantile(0.75)
+        sentiment_low = df.loc[i-30:i,'Vader_Text_polarity'].quantile(0.25)
+        return_high = df.loc[i-30:i,'daily_return'].quantile(0.75)
+        return_low = df.loc[i-30:i,'daily_return'].quantile(0.25)
+        
+        if ((df.loc[i,'Vader_Text_polarity'] > sentiment_high) & (df.loc[i,'daily_return'] < return_low)):
+            Trade.append('buy')
+        elif ((df.loc[i,'Vader_Text_polarity'] < sentiment_low) & (df.loc[i,'daily_return'] > return_high)):
+            Trade.append('sell')
+        else:
+            Trade.append('')
+    # add sell and buy point into the dataframe         
+    df['Trade'] = pd.Series(Trade)
+    return df
+
+df_bilibili_polarity_return = pd.read_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili_backtesting\bilibili_polarity_return.csv")
+df_backtesting = judgement_point(df_bilibili_polarity_return).dropna()
+df_backtesting.to_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili_backtesting\back_testing.csv")
 
 
-df_daily = pd.read_csv('../dataset/test_backtesting.csv')
 
-# daily analysis
-# 对于每一列 都需要让它自己跑完：包含判断自己是buy还是sell， 什么时候进行账户清算
-bank_acc = 0
-stock_acc = 0
+# *****Back Testing*****
+# for every single row, it needs to be judged whether to buy or sell
+bank_acc = 10000
 invest_total = 0
-for i in range(len(df_daily.index)):
-    if df_daily.loc[i, 'Trade'] == 'buy':
+stock_acc = 0
+for i in range(len(df_backtesting)):
+
+    if df_backtesting.loc[i, 'Trade'] == 'buy':
         bank_acc = bank_acc - 1
         invest_total = invest_total + 1  #/时间价值*****
         stock_acc = stock_acc + 1
-        for j in range(i+1,len(df_daily.index)):
-            if df_daily.loc[j, 'Trade'] == 'sell':
-                stock_acc = stock_acc * (df_daily.loc[j,'Adj Close']/df_daily.loc[i,'Adj Close'])
-                bank_acc = bank_acc + stock_acc
-                stock_acc = 0 
-                break # 遇到第一个sell就全部卖掉，这笔做多就结束了
+        for j in range(i+1,len(df_backtesting)):
+            if df_backtesting.loc[j, 'Trade'] == 'sell': 
+                break   
+            stock_acc = stock_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
 
-    elif df_daily.loc[i, 'Trade'] == 'sell':
-        stock_acc = 0 # borrow stock and sell them
-        bank_acc = bank_acc + 1 # sell stock and receive moneny
-        for j in range(i+1, len(df_daily.index)):
-            if df_daily.loc[j, 'Trade'] == 'buy':
-                stock_acc = 0 # buy stock and return them
-                bank_acc = bank_acc - 1*(df_daily.loc[j,'Adj Close']/df_daily.loc[i,'Adj Close'])
+        stock_acc = stock_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])  
+        bank_acc = bank_acc + stock_acc 
+        stock_acc = 0
+        # 遇到第一个sell就全部卖掉，这笔做多就结束了
+
+    elif df_backtesting.loc[i, 'Trade'] == 'sell':
+        # we don't need to set stock_acc, because investor will borrow stock and sell them
+        bank_acc = bank_acc + 1  #sell stock and receive moneny
+        for j in range(i+1, len(df_backtesting)):
+            if df_backtesting.loc[j, 'Trade'] == 'buy': 
                 break # 遇到第一个buy就全部赎回，这笔做空就结束了
+            bank_acc = bank_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
 
+        bank_acc = bank_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
+        # still don't need to set stock_acc, because investor will buy stock and return them
+
+print(bank_acc)
 print(stock_acc)
 print(invest_total)
-print(bank_acc)
+
