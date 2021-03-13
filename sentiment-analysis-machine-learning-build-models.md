@@ -4,7 +4,9 @@ Machine learning is another feasible way for sentiment analysis.
 
 <div align=center><img width = '500' height ='300' src ="./sentiment-testing/machine_learning_models.png"/></div>
 
-There are a lot of machine learning models are available from scikit-learn package in python library. We build three main models, Naïve Bayes Model, Logistics Regression Model and SVM Model, to predict the sentiment of tweets. We start from the twitter dataset of Fusun Pharma. After calculating the accuracy of these three models, we will use the most efficient model to predict the sentiment of tweets in other dataset. 
+There are a lot of machine learning models are available from scikit-learn package in python library. We build three main models, Naïve Bayes Model, Logistics Regression Model and SVM Model, to predict the sentiment of tweets. We start from the twitter dataset of Fusun Pharma. We use the processed texts as the input data for the machine learning models. 
+
+After calculating the accuracies of these three models, we will use the most efficient model to predict the sentiment of tweets in other dataset. 
 
 ## 1. Generate Training Dataset
 
@@ -111,12 +113,29 @@ def Support_Vector_Machines(df_test_text, df_training_text, df_training_target):
     return prediction_svc
 ```
 
-## 3. Accuracy of Three Models
+## 3. Accuracies of Three Models
+
+### 3.1 Accuracies on the testing part
+
+|                      | test_size = 0.33，random_state = 42 | test_size = 0.33，random_state = 30 | test_size = 0.20，random_state = 42 |
+| -------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| Naïve Bayes          | 76.01%                              | 76.01%                              | 77.78%                              |
+| Logistics Regression | 72.78%                              | 74.66%                              | 78.67%                              |
+| SVM                  | 73.32%                              | 73.05%                              | 75.11%                              |
+
+While training the models, we need to set a testing size and a random state. 
+We find that the smaller the testing size is, the more accurate results will be produced. The accuracy of the Logistics Regression model is most affected by this factor. In addition, the influence of random state is not significant.
 
 
+### 3.2 Accuracies on all the whole dataset
 
+|                      | test_size = 0.33, random_state = 42 | test_size = 0.33, random_state = 30 | test_size = 0.20, random_state = 42 |
+| -------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| Naïve Bayes          | 85.13%                              | 84.51%                              | 86.64%                              |
+| Logistics Regression | 84.77%                              | 84.77%                              | 87.53%                              |
+| SVM                  | 88.60%                              | 88.60%                              | 92.16%                              |
 
-
+The accuracies are very high because the trained dataset is the same as the target dataset.
 
 
 ## References:
