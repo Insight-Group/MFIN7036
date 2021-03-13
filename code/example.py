@@ -14,16 +14,18 @@ start_time = t.time()  # check the running time
 print('\nReading data...\n')
 # Read data downloaded by Scweet(https://github.com/Altimis/Scweet). The csv file contains columns - UserScreenName,UserName,Timestamp,Text,Emojis,Comments,Likes,Retweets,Image link,Tweet URL
 df_twitter = pd.read_csv("../dataset/bilibili-2018-2021-twitter-dataset/bilibili_2018-01-01_2021-02-09.csv")
+# df_twitter = pd.read_csv("../dataset/fusun-pharma-2020-twitter-dataset/fosun_pharma_2020.csv")
 print('\nPrint example tweets after reading the csv file')
 print(df_twitter.head())
 
 # Read data downloaded from Yahoo Finance. The csv file contains columns - Date,Open,High,Low,Close,Adj Close,Volume
-df_stock = pd.read_csv("../dataset/bilibili-2018-2021-stock-dataset/BILI.csv", index_col=False)
+df_stock = pd.read_csv("../dataset/bilibili-2018-2021-stock-dataset/BILI.csv")
+# df_stock = pd.read_csv("../dataset/fusun-pharma-2020-stock-dataset/600196.csv")
 print('\nPrint example prices after reading the csv file')
 print(df_stock.head())
 
 # Reference dataset which has been manually judged by us (MUST contain a column called 'sentiment_manually')
-df_reference = pd.read_excel("../dataset/fusun-pharma-2020-twitter-dataset/sentiment_manually checking.xlsx")  # we have manually checked the dataset of fusun pharma
+# df_reference = pd.read_excel("../dataset/fusun-pharma-2020-twitter-dataset/sentiment_manually checking.xlsx")  # we have manually checked the dataset of fusun pharma
 
 # Training dataset (MUST contain a column called 'sentiment_manually')
 df_training_dataset = pd.read_csv("../dataset/training dataset/training_dataset.csv")           # Sentiment140 dataset (1.6 millions tweets), too big to run
@@ -81,7 +83,7 @@ df_twitter['prediction_svc'] = pd.Series(sa_ml.Support_Vector_Machines(df_twitte
                                                                        df_training['processed_text'],
                                                                        df_training['sentiment_manually']))
 
-# # Checking the accuracies according to the reference dataframe-----------------
+# # Checking the accuracies according to the reference dataframe---------------
 
 # df_twitter = pd.concat([df_twitter, df_reference['sentiment_manually']], axis=1)
 
@@ -106,7 +108,7 @@ df_twitter['prediction_svc'] = pd.Series(sa_ml.Support_Vector_Machines(df_twitte
 # # SVM Model
 # print('Accuracy of Support_Vector_Machines: ', sa_vdtb.accuracy_checking(df_twitter, 'prediction_svc', 'sentiment_manually'))
 
-df_twitter.to_csv('../dataset/test.csv')
+# df_twitter.to_csv('../dataset/test.csv')
 
 
 
