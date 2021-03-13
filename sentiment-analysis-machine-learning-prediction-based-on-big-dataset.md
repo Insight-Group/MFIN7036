@@ -22,8 +22,6 @@ The testing size is set to be 0.33 and random state is 42 for all the models in 
 
 In general, the accuracies of all models can be improved by training with more tweets. However, the relationship is not linear. It depends on the quality of the trained tweets.
 
-With a larger amount of trained tweets, the accuracies of all the three models does not improves as expected while judging the sentiment other twitter datasets. The model is trained to be more suitable for this dataset, it does not mean that it can be more suitable for judging the sentiment of other datasets. The accuracies of those trained by Fusun Pharma twitter dataset are all above 80%, much higher than those trained by this dataset.
-
 
 ### 2.2 Accuracies on the 1123 tweets of Fusun Pharma in 2020
 | Number of trained tweets | 2000   | 5000   | 20000  | 50000  |
@@ -31,3 +29,8 @@ With a larger amount of trained tweets, the accuracies of all the three models d
 | Naïve Bayes              | 20.12% | 19.86% | 22.44% | 18.08% |
 | Logistics Regression     | 26.62% | 23.86% | 31.43% | 23.24% |
 | SVM                      | 26.45% | 23.86% | 32.15% | 24.58% |
+
+
+With a larger amount of trained tweets, the accuracies of all the three models does not improves as expected while judging the sentiment other twitter datasets. The model is trained to be more suitable for this dataset, it does not mean that it can be more suitable for judging the sentiment of other datasets. The accuracies of those trained by Fusun Pharma twitter dataset are all above 80%, much higher than those trained by this dataset.
+
+
