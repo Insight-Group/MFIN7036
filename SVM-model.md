@@ -30,7 +30,7 @@ for i in range(1,31):
     regression_SVM['df_volatility']=np.where(regression_SVM[df_range]/regression_SVM[df_range].shift(1)-1>0,1,0)
     y=regression_SVM['df_volatility']
 
-```python 
+```
 In this way, the dependant variable y is realy to test. 
 
 ## 2. Independent Variable X:TFIDF Vertor for Daily Tweets
@@ -61,7 +61,7 @@ We then create tf-idf vector on the daily tweets to get rid of explicit for loop
 for i in range(1,31):
     v=TfidfVectorizer(stop_words='english',max_df=0.9)
     X = v.fit_transform(regression_SVM['daily_tweets'])
-```python 
+```
 Therefore, the independant variable X is realy to test in our model. 
 
 ## 3. Building SVM model 
@@ -79,7 +79,7 @@ for i in range(1,31):
     result[df_range]=report['weighted avg']['precision']
     
     print(result)
-```python 
+```
 
 ## 3. Results 
 
