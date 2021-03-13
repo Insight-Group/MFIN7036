@@ -26,6 +26,9 @@
 - [Regression: Our final method](regression-with-sentiment-polarity-scores-final-strategy.md)
 - [Regression: SVM model](SVM-model.md)
 
+### Ⅴ Back Testing
+- [Back Testing to testify our strategy](back_testing.md)
+
 ### Ⅴ Say Something
 
 - [Example Blog](./example-blog.md)
