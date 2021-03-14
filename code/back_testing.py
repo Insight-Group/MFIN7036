@@ -9,12 +9,10 @@ def judgement_point(df):
         # settle the value which could be viewed as high or low
         sentiment_high = df.loc[i-30:i,'Vader_Text_polarity'].quantile(0.75)
         sentiment_low = df.loc[i-30:i,'Vader_Text_polarity'].quantile(0.25)
-        return_high = df.loc[i-30:i,'daily_return'].quantile(0.75)
-        return_low = df.loc[i-30:i,'daily_return'].quantile(0.25)
         
-        if ((df.loc[i,'Vader_Text_polarity'] > sentiment_high) & (df.loc[i,'daily_return'] < return_low)):
+        if df.loc[i,'Vader_Text_polarity'] > sentiment_high:
             Trade.append('buy')
-        elif ((df.loc[i,'Vader_Text_polarity'] < sentiment_low) & (df.loc[i,'daily_return'] > return_high)):
+        elif df.loc[i,'Vader_Text_polarity'] < sentiment_low:
             Trade.append('sell')
         else:
             Trade.append('')
@@ -30,37 +28,33 @@ df_backtesting.to_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili_backtesting\back_te
 
 # *****Back Testing*****
 # for every single row, it needs to be judged whether to buy or sell
-bank_acc = 10000
+bank_acc = 0
 invest_total = 0
-stock_acc = 0
+cashflow_discount = 0
 for i in range(len(df_backtesting)):
-
-    if df_backtesting.loc[i, 'Trade'] == 'buy':
+    
+   
+    if df_backtesting['Trade'].iloc[i] == 'buy':
         bank_acc = bank_acc - 1
-        invest_total = invest_total + 1  #/时间价值*****
-        stock_acc = stock_acc + 1
+        stock_acc = 1
+        cashflow_discount = cashflow_discount - 1/((1+0.0137%)**i)
         for j in range(i+1,len(df_backtesting)):
-            if df_backtesting.loc[j, 'Trade'] == 'sell': 
+            if df_backtesting['Trade'].iloc[j] == 'sell' or j == len(df_backtesting): 
+                stock_acc_new = stock_acc*(df_backtesting['Adj Close'].iloc[j]/df_backtesting['Adj Close'].iloc[i])
+                bank_acc = bank_acc + stock_acc_new
+                cashflow_discount = cashflow_discount + stock_acc_new/((1+0.0137%)**i)
                 break   
-            stock_acc = stock_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
+           # 遇到第一个sell就全部卖掉，这笔做多就结束了
 
-        stock_acc = stock_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])  
-        bank_acc = bank_acc + stock_acc 
-        stock_acc = 0
-        # 遇到第一个sell就全部卖掉，这笔做多就结束了
-
-    elif df_backtesting.loc[i, 'Trade'] == 'sell':
-        # we don't need to set stock_acc, because investor will borrow stock and sell them
-        bank_acc = bank_acc + 1  #sell stock and receive moneny
-        for j in range(i+1, len(df_backtesting)):
-            if df_backtesting.loc[j, 'Trade'] == 'buy': 
-                break # 遇到第一个buy就全部赎回，这笔做空就结束了
-            bank_acc = bank_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
-
-        bank_acc = bank_acc*(df_backtesting.loc[j,'Adj Close']/df_backtesting.loc[j-1,'Adj Close'])
-        # still don't need to set stock_acc, because investor will buy stock and return them
+    # elif df_backtesting['Trade'].iloc[i] == 'sell':
+    #     # we don't need to set stock_acc, because investor will borrow stock and sell them
+    #     bank_acc = bank_acc + 1  #sell stock and receive moneny
+    #     for j in range(i+1, len(df_backtesting)):
+    #         if df_backtesting['Trade'].iloc[j] == 'buy': 
+    #             bank_acc = bank_acc-1*(df_backtesting['Adj Close'].iloc[j]/df_backtesting['Adj Close'].iloc[i])
+    #             break # 遇到第一个buy就全部赎回，这笔做空就结束了
+    #     # still don't need to set stock_acc, because investor will buy stock and return them
 
 print(bank_acc)
-print(stock_acc)
-print(invest_total)
+# print(invest_total)
 
