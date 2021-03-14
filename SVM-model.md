@@ -85,7 +85,7 @@ for i in range(1,31):
 
 As a conclusion, we could see that the precision reaches the peak at T=1, followed by T= 20 days and T = 27 days. In otehr words, the sentiment and return has significant correlation in  T= 1, with the highest precision of 78.62%. The result is roughly consistent with our regression results above, with only one-day lag. The possible reason would be the lack of sentiment analysis in SVM model. Our group generate sentiment analysis in both Lexicon-based approaches and SVM-based approaches. Through the precise contrasts, we belieev we could find the most accurate model to conduct sentimeny analysis.   
 
-![90f321eb34ed472e0d1aa0597974b1f](https://user-images.githubusercontent.com/78474798/111010925-cf839080-838f-11eb-8caa-91667f1a70ac.png)
+![SVM_model](https://user-images.githubusercontent.com/78474798/111053737-4be4a500-845e-11eb-9bcc-8af8bdaeae44.png)
 
 
 
