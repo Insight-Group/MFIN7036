@@ -28,7 +28,3 @@
 
 ### Ⅴ Back Testing
 - [Back Testing to testify our strategy](back_testing.md)
-
-### Ⅵ Say Something
-
-- [Example Blog](./example-blog.md)
