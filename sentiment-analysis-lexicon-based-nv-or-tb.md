@@ -201,3 +201,10 @@ Both of these two approaches conclude that positive sentiment in tweets is great
 After scoring these 402 tweets manually and comparing the results given by these two approaches, *NLTK Vader* gives accurate sentiment polarity to 181 of the tweets whereas *TextBlob* gives accurate sentiment polarity to 139 of the tweets.
 
 In overall, the accuracy of *NLTK Vader* in judging the sentiment polarity of the 1123 tweets is **80.14%** and that of TextBlob is **76.58%**.
+
+
+## 3 Modifications on *NLTK Vader*'s code
+
+ <div align=center><img src ="./sentiment-testing/NV_working_principle.png"/></div>
+
+Furthermore, we add a revising step based on tf-idf weighting to weaken the polarity score of the most frequent words in all the tweets for *NLTK Vader*. The accuracy in judging the sentiment polarity of the 1123 tweets is now **79.88%**, which is less than before. This adjustment cannot improve *NLTK Vader*'s correct rate on sentiment analysis of Fosun Pharma's tweets.

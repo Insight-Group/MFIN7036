@@ -1,5 +1,7 @@
 # Lexicon-based approaches: First attempt
 
+In the lexicon-based method, a polarity score will be assigned to the unigram which is found in the lexicon library and the overall polarity score is then computed by summing the polarities of the unigrams for longer text. (Kolchyna et al., 2015)
+
 From data preprocessing, we removed urls, @ references and '#' from tweets, filtered out non-english words and stop wordstweets, and combined the different grammatical forms of the same words by implementing stemming and lemmatization. The next stage is sentiment analysis.
 
 NLTK Vader and TextBlob are the most popular tools used to analyse sentiment from text. At this stage, we apply both of these two tools for our tokenized words which are listed at the `word_tokens` column of our twitter dataframe.
@@ -58,3 +60,8 @@ While we are applying this tool to the `word_tokens` column, it is also sensitiv
 - Find out why *NLTK Vader* is not useful when analysing the tokenized words
 - Since the polarity scores produced by *NLTK Vader* and *TextBlob* are very different, identify the difference of the two methods.
 - Find out how to apply the TFIDF weights for sentiment analysis.
+
+
+## Reference
+
+1. Kolchyna, O., Souza, T., Treleaven, P., Aste, T. (2015) , *Twitter Sentiment Analysis: Lexicon Method, Machine Learning Method and Their Combination*, viewed 12 March 2011, <https://arxiv.org/abs/1507.00955>.

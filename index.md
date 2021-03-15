@@ -23,8 +23,8 @@
 ### Ⅳ Regression Strategies
 
 - [Regression: First attempt](regression-first-attempt.md)
-- [Regression: Our final method](regression-with-sentiment-polarity-scores-final-strategy.md)
 - [Regression: SVM model](SVM-model.md)
+- [Regression: Our final method](regression-with-sentiment-polarity-scores-final-strategy.md)
 
 ### Ⅴ Say Something
 

@@ -1,10 +1,12 @@
 # Machine learning approaches: Build NB, LR, SVM models
 
-Machine learning is another feasible way for sentiment analysis. 
+Machine learning is another feasible way for sentiment analysis. In the machine learning method, the unigrams or their combinations (N-grams) will be used as features for the classifiers. (Kolchyna et al., 2015)
 
 <div align=center><img width = '500' height ='300' src ="./sentiment-testing/machine_learning_models.png"/></div>
 
-There are a lot of machine learning models are available from scikit-learn package in python library. We build three main models, Naïve Bayes Model, Logistics Regression Model and SVM Model, to predict the sentiment of tweets. We start from the twitter dataset of Fusun Pharma. We use the processed texts as the input data for the machine learning models. 
+There are a lot of machine learning models are available from scikit-learn package in python library. We build three main models, Naïve Bayes Model, Logistics Regression Model and SVM Model, to predict the sentiment of tweets. All of them belong to supervised learning models. Naïve Bayes is based on a probabilistic classifier whereas Logistics Regression and SVM are linear approaches. 
+
+We start from the twitter dataset of Fosun Pharma. We use the processed texts as the input data for the machine learning models. 
 
 After calculating the accuracies of these three models, we will use the most efficient model to predict the sentiment of tweets in other dataset. 
 
@@ -118,7 +120,7 @@ def Support_Vector_Machines(df_test_text, df_training_text, df_training_target):
 ### 3.1 Accuracies on the testing part
 
 |                      | test_size = 0.33，random_state = 42 | test_size = 0.33，random_state = 30 | test_size = 0.20，random_state = 42 |
-| -------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| -------------------- | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 | Naïve Bayes          | 76.01%                              | 76.01%                              | 77.78%                              |
 | Logistics Regression | 72.78%                              | 74.66%                              | 78.67%                              |
 | SVM                  | 73.32%                              | 73.05%                              | 75.11%                              |
@@ -130,7 +132,7 @@ We find that the smaller the testing size is, the more accurate results will be 
 ### 3.2 Accuracies on all the whole dataset
 
 |                      | test_size = 0.33, random_state = 42 | test_size = 0.33, random_state = 30 | test_size = 0.20, random_state = 42 |
-| -------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| :------------------: | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 | Naïve Bayes          | 85.13%                              | 84.51%                              | 86.64%                              |
 | Logistics Regression | 84.77%                              | 84.77%                              | 87.53%                              |
 | SVM                  | 88.60%                              | 88.60%                              | 92.16%                              |
@@ -138,8 +140,10 @@ We find that the smaller the testing size is, the more accurate results will be 
 The accuracies are very high because the trained dataset is the same as the target dataset.
 
 
-## References:
+## References
 
-1. Ottesen, C. 2017, *Comparison between Naïve Bayes and Logistic Regression*, viewed 11 March 2011, <https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/>.
+1. Kolchyna, O., Souza, T., Treleaven, P., Aste, T. (2015) , *Twitter Sentiment Analysis: Lexicon Method, Machine Learning Method and Their Combination*, viewed 12 March 2011, <https://arxiv.org/abs/1507.00955>.
 
-2. Bassey, P. 2019, *Logistic Regression Vs Support Vector Machines (SVM)*,  viewed 11 March 2011, <https://medium.com/axum-labs/logistic-regression-vs-support-vector-machines-svm-c335610a3d16>.
+2. Ottesen, C. 2017, *Comparison between Naïve Bayes and Logistic Regression*, viewed 11 March 2011, <https://dataespresso.com/en/2017/10/24/comparison-between-naive-bayes-and-logistic-regression/>.
+
+3. Bassey, P. 2019, *Logistic Regression Vs Support Vector Machines (SVM)*,  viewed 11 March 2011, <https://medium.com/axum-labs/logistic-regression-vs-support-vector-machines-svm-c335610a3d16>.
