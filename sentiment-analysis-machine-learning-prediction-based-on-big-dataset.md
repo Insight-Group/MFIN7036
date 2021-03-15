@@ -15,7 +15,7 @@ The testing size is set to be 0.33 and random state is 42 for all the models in 
 
 ### 2.1 Accuracies on the testing part
 | Number of trained tweets | 2000   | 5000   | 20000  | 50000  |
-| ------------------------ | :----: | :----: | :----: | :----: |
+| ------------------------ | ------ | ------ | ------ | ------ |
 | Naïve Bayes              | 69.55% | 68.55% | 73.52% | 73.40% |
 | Logistics Regression     | 71.67% | 70.42% | 74.70% | 75.55% |
 | SVM                      | 72.42% | 70.24% | 74.85% | 75.62% |
@@ -25,7 +25,7 @@ In general, the accuracies of all models can be improved by training with more t
 
 ### 2.2 Accuracies on the 1123 tweets of Fosun Pharma in 2020
 | Number of trained tweets | 2000   | 5000   | 20000  | 50000  |
-| ------------------------ | :----: | :----: | :----: | :----: |
+| ------------------------ | ------ | ------ | ------ | ------ |
 | Naïve Bayes              | 20.12% | 19.86% | 22.44% | 18.08% |
 | Logistics Regression     | 26.62% | 23.86% | 31.43% | 23.24% |
 | SVM                      | 26.45% | 23.86% | 32.15% | 24.58% |
