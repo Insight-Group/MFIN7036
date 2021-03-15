@@ -20,41 +20,38 @@ def judgement_point(df):
     df['Trade'] = pd.Series(Trade)
     return df
 
-df_bilibili_polarity_return = pd.read_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili_backtesting\bilibili_polarity_return.csv")
+df_bilibili_polarity_return = pd.read_csv("../dataset/bilibili_backtesting/bilibili_polarity_return.csv")
 df_backtesting = judgement_point(df_bilibili_polarity_return).dropna()
-df_backtesting.to_csv(r"D:\gitrepo\MFIN7036\dataset\bilibili_backtesting\back_testing.csv")
+df_backtesting.to_csv("../dataset/bilibili_backtesting/back_testing.csv")
 
 
 
 # *****Back Testing*****
 # for every single row, it needs to be judged whether to buy or sell
-bank_acc = 0
-invest_total = 0
-cashflow_discount = 0
+
+cashflow_in_discount = 0
+cashflow_out_discount = 0
+record = []
 for i in range(len(df_backtesting)):
-    
-   
+    record.append(i)
+    start_point = record[0]
     if df_backtesting['Trade'].iloc[i] == 'buy':
-        bank_acc = bank_acc - 1
         stock_acc = 1
-        cashflow_discount = cashflow_discount - 1/((1+0.0137%)**i)
+        cashflow_out_discount += 1/((1+0.000137)**(i-start_point))
         for j in range(i+1,len(df_backtesting)):
             if df_backtesting['Trade'].iloc[j] == 'sell' or j == len(df_backtesting): 
-                stock_acc_new = stock_acc*(df_backtesting['Adj Close'].iloc[j]/df_backtesting['Adj Close'].iloc[i])
-                bank_acc = bank_acc + stock_acc_new
-                cashflow_discount = cashflow_discount + stock_acc_new/((1+0.0137%)**i)
+                stock_acc_new = 1*(df_backtesting['Adj Close'].iloc[j]/df_backtesting['Adj Close'].iloc[i])
+                cashflow_in_discount += stock_acc_new/((1+0.000137)**(j-start_point))
                 break   
-           # 遇到第一个sell就全部卖掉，这笔做多就结束了
+           # when encountering selling point, this round of buying stock would be over
 
-    # elif df_backtesting['Trade'].iloc[i] == 'sell':
-    #     # we don't need to set stock_acc, because investor will borrow stock and sell them
-    #     bank_acc = bank_acc + 1  #sell stock and receive moneny
-    #     for j in range(i+1, len(df_backtesting)):
-    #         if df_backtesting['Trade'].iloc[j] == 'buy': 
-    #             bank_acc = bank_acc-1*(df_backtesting['Adj Close'].iloc[j]/df_backtesting['Adj Close'].iloc[i])
-    #             break # 遇到第一个buy就全部赎回，这笔做空就结束了
-    #     # still don't need to set stock_acc, because investor will buy stock and return them
+    elif df_backtesting['Trade'].iloc[i] == 'sell':
+        cashflow_in_discount += 1/((1+0.000137)**(i-start_point))
+        for j in range(i+1, len(df_backtesting)):
+            if df_backtesting['Trade'].iloc[j] == 'buy' or j == len(df_backtesting): 
+                cashflow_out_discount += 1*(df_backtesting['Adj Close'].iloc[j]/df_backtesting['Adj Close'].iloc[i])/((1+0.000137)**(j-start_point))
+                break 
+          # when encountering buying point, this round of short selling stock would be over
 
-print(bank_acc)
-# print(invest_total)
-
+return_at_first_point = (cashflow_in_discount - cashflow_out_discount)/cashflow_out_discount
+print(return_at_first_point)
