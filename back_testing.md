@@ -41,7 +41,6 @@ def judgement_point(df):
 - Code:
 
 ```python
-
 df_bilibili_polarity_return = pd.read_csv("../dataset/bilibili_backtesting/bilibili_polarity_return.csv")
 df_backtesting = judgement_point(df_bilibili_polarity_return).dropna()
 df_backtesting.to_csv("../dataset/bilibili_backtesting/back_testing.csv")
