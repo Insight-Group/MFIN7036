@@ -45,7 +45,6 @@ df_bilibili_polarity_return = pd.read_csv("../dataset/bilibili_backtesting/bilib
 df_backtesting = judgement_point(df_bilibili_polarity_return).dropna()
 df_backtesting.to_csv("../dataset/bilibili_backtesting/back_testing.csv")
 
-# *****Back Testing*****
 # for every single row, it needs to be judged whether to buy or sell
 
 cashflow_in_discount = 0
